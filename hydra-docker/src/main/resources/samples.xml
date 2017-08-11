@@ -1,0 +1,146 @@
+<add>
+  <doc>
+    <field name="id">appStore_1</field>
+    <field name="type_s">AppStoreEntry</field>
+    <field name="org_s">Hortonworks</field>
+    <field name="name_s">LAMP</field>
+    <field name="desc_s">Linux Apache MySQL PHP web application</field>
+    <field name="like_i">50000</field>
+    <field name="download_i">100000</field>
+  </doc>
+  <doc>
+    <field name="id">appStore_2</field>
+    <field name="type_s">AppStoreEntry</field>
+    <field name="org_s">Apache</field>
+    <field name="name_s">Kafka</field>
+    <field name="desc_s">Kafka project aims to provide a unified, high-throughput, low-latency platform for handling real-time data feeds.</field>
+    <field name="like_i">2000</field>
+    <field name="download_i">10000</field>
+  </doc>
+  <doc>
+    <field name="id">appStore_3</field>
+    <field name="type_s">AppStoreEntry</field>
+    <field name="org_s">Jenkins-ci.org</field>
+    <field name="name_s">Jenkins</field>
+    <field name="desc_s">The leading open source automation server</field>
+    <field name="like_i">100000</field>
+    <field name="download_i">1000000</field>
+  </doc>
+  <doc>
+    <field name="id">appStore_4</field>
+    <field name="type_s">AppStoreEntry</field>
+    <field name="org_s">IBM</field>
+    <field name="name_s">BigSQL</field>
+    <field name="desc_s">Enterprise SQL engine for complex SQL analytics and data virtualization.</field>
+    <field name="like_i">2000</field>
+    <field name="download_i">10000</field>
+  </doc>
+  <doc>
+    <field name="id">appStore_5</field>
+    <field name="type_s">AppStoreEntry</field>
+    <field name="org_s">pcjs.org</field>
+    <field name="name_s">pcjs</field>
+    <field name="desc_s">The original IBM PC simulation that runs in your web browser.</field>
+    <field name="like_i">2000</field>
+    <field name="download_i">10000</field>
+  </doc>
+  <doc>
+    <field name="type_s">docker</field>
+    <field name="id">appStore_1_1</field>
+    <field name="image_s">httpd</field>
+    <field name="ports">80:80</field>
+    <field name="env">USER=${user}</field>
+    <field name="version_s">latest</field>
+    <field name="volumes">/var/www/html:/mnt/hdfs/user/${user}/httpd</field>
+  </doc>
+  <doc>
+    <field name="type_s">docker</field>
+    <field name="id">appStore_1_2</field>
+    <field name="image_s">mysql</field>
+    <field name="ports">3306:3306</field>
+    <field name="env">USER=${user}</field>
+    <field name="version_s">latest</field>
+    <field name="volumes">/var/lib/mysql:/mnt/hdfs/user/${user}/mysql</field>
+  </doc>
+  <doc>
+    <field name="type_s">docker</field>
+    <field name="id">appStore_2_1</field>
+    <field name="image_s">kafka-client</field>
+    <field name="ports">6667:6667</field>
+    <field name="env">USER=${user}</field>
+    <field name="version_s">latest</field>
+    <field name="volumes">/kafka-logs:/mnt/hdfs/user/${user}/kafka</field>
+  </doc>
+  <doc>
+    <field name="type_s">docker</field>
+    <field name="id">appStore_2_2</field>
+    <field name="image_s">kafka-broker</field>
+    <field name="ports">6667:6667</field>
+    <field name="env">USER=${user}</field>
+    <field name="version_s">latest</field>
+    <field name="volumes">/kafka-logs:/mnt/hdfs/user/${user}/kafka</field>
+  </doc>
+  <doc>
+    <field name="type_s">docker</field>
+    <field name="id">appStore_3_1</field>
+    <field name="image_s">jenkins</field>
+    <field name="ports">8080:8080</field>
+    <field name="env">USER=${user}</field>
+    <field name="version_s">latest</field>
+    <field name="volumes">/var/lib/jenkins:/mnt/hdfs/user/${user}/jenkins</field>
+  </doc>
+  <doc>
+    <field name="type_s">docker</field>
+    <field name="id">appStore_3_2</field>
+    <field name="image_s">jenkins-slave</field>
+    <field name="ports">8080:8080</field>
+    <field name="env">USER=${user}</field>
+    <field name="version_s">latest</field>
+    <field name="volumes">/var/lib/jenkins:/mnt/hdfs/user/${user}/jenkins</field>
+  </doc>
+  <doc>
+    <field name="type_s">docker</field>
+    <field name="id">appStore_4_1</field>
+    <field name="image_s">bigsql-head</field>
+    <field name="ports">51000:51000</field>
+    <field name="env">USER=${user}</field>
+    <field name="version_s">latest</field>
+    <field name="volumes">/var/ibmpacks/bigsql:/mnt/hdfs/user/${user}/bigsql</field>
+  </doc>
+  <doc>
+    <field name="type_s">docker</field>
+    <field name="id">appStore_4_2</field>
+    <field name="image_s">bigsql-worker</field>
+    <field name="ports">51000:51000</field>
+    <field name="env">USER=${user}</field>
+    <field name="version_s">latest</field>
+    <field name="volumes">/var/ibmpacks/bigsql:/mnt/hdfs/user/${user}/bigsql</field>
+  </doc>
+  <doc>
+    <field name="type_s">docker</field>
+    <field name="id">appStore_5_1</field>
+    <field name="image_s">eyang-1.openstacklocal:5000/pcjs</field>
+    <field name="ports">8088:8088</field>
+    <field name="env">USER=${user}</field>
+    <field name="version_s">latest</field>
+    <field name="volumes">/var/lib/pcjs:/mnt/hdfs/user/${user}/pcjs</field>
+  </doc>
+<!--  <doc>
+    <field name="id">app_1</field>
+    <field name="type_s">AppEntry</field>
+    <field name="name_s">application 1</field>
+    <field name="app_s">Hortonworks/LAMP</field>
+  </doc>
+  <doc>
+    <field name="id">app_2</field>
+    <field name="type_s">AppEntry</field>
+    <field name="name_s">application 2</field>
+    <field name="app_s">Apache/Kafka</field>
+  </doc>
+  <doc>
+    <field name="id">app_3</field>
+    <field name="type_s">AppEntry</field>
+    <field name="name_s">application 3</field>
+    <field name="app_s">IBM/BigSQL</field>
+  </doc> -->
+</add>

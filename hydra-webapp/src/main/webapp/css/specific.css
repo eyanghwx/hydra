@@ -1,0 +1,19 @@
+.tile {
+  border: 1px solid #cdcdcd;
+  height: 180px;
+}
+
+.desc {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 60px;
+}
+
+.appBanner {
+  display: block;
+  height: 40px;
+}
+
+.appList {
+  display: block;
+}

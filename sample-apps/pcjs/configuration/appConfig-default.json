@@ -1,0 +1,18 @@
+{
+  "schema": "http://example.org/specification/v2.0.0",
+  "metadata": {
+  },
+  "global": {
+    "application.def": ".slider/package/pcjs/pcjs-1.0.0.zip",
+    "site.global.listen_port": "8088"
+  },
+  "components": {
+    "pcjs": {
+      "component.instances": "1",
+      "role.script": "scripts/pcjs.py"
+    },
+    "slider-appmaster": {
+      "jvm.heapsize": "256M"
+    }
+  }
+}

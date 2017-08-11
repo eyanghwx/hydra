@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en" data-ng-app="app">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Seed App</title>
+    <link rel="stylesheet" href="vendor/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="vendor/bootstrap/dist/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="css/theme.css">
+    <link rel="stylesheet" href="css/specific.css">
+</head>
+<body role="document">
+
+<div class="container">
+  <div class="row">
+    <div class="col-xs-3 col-md-3 col-lg-3">
+      <!-- App banner -->
+      <div class="appBanner">
+        <div class="pull-left">
+          Applications
+        </div>
+        <div class="pull-right">
+          <a href="#!/"  class="btn btn-default">+ New</a>
+        </div>
+      </div>
+      
+      <!-- App list -->
+      <div class="appList">
+        <div ng-controller="AppListController" class="navbar nav-pills" role="navigation" role="presentation">
+          <ul class="nav nav-pills nav-stacked">
+            <li ng-repeat="yarnApp in appList" >
+              <p><a href="#!/app/{{yarnApp.id}}">{{yarnApp.name}}</a>
+              <a href="#" ng-click="deleteApp(yarnApp.id,yarnApp.name)"><span class="glyphicon glyphicon-remove"></span></a></p>
+              <p>{{yarnApp.app}}</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-xs-9 col-md-9 col-lg-9">
+      <div data-ng-view></div>
+    </div>
+  </div>
+
+</div>
+
+<script src="vendor/jquery/dist/jquery.min.js"></script>
+<script src="vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="vendor/angular/angular.min.js"></script>
+<script src="vendor/angular-route/angular-route.min.js"></script>
+<script src="js/app.js"></script>
+<script src="js/controllers.js"></script>
+<script src="js/filters.js"></script>
+<script src="js/routes.js"></script>
+<script src="js/services.js"></script>
+</body>
+</html>
