@@ -97,6 +97,14 @@ controllers.controller("AppDetailsController", [ '$scope', '$http',
 
       $http({
         method : 'GET',
-        url : '/v1/appDetails/' + $scope.appName
+        url : '/v1/appDetails/config/' + $scope.appName
       }).then(successCallback, errorCallback);
+
+      $http({
+        method : 'GET',
+        url : '/v1/appDetails/status/' + $scope.appName
+      }).then(function(data, status, headers, config) {
+        $scope.status = data.data.state;
+        $scope.tracker = data.data.tracker;
+      }, errorCallback);
     } ]);

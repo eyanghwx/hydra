@@ -31,7 +31,9 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.apache.hydra.application.YarnClient;
 import org.apache.hydra.model.AppDetails;
+import org.apache.hydra.model.AppStatus;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -64,7 +66,7 @@ public class AppDetailsController {
    * @param id
    * @return
    */
-  @Path("{id}")
+  @Path("config/{id}")
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   public List<AppDetails> getDetails(@PathParam("id") String id) {
@@ -98,4 +100,34 @@ public class AppDetailsController {
     return list;
   }
 
+  /**
+   * Check application status
+   */
+  @Path("status/{id}")
+  @GET
+  @Produces(MediaType.APPLICATION_JSON)
+  public AppStatus getStatus(@PathParam("id") String id) {
+    AppStatus status = new AppStatus();
+    SolrClient solr = new HttpSolrClient.Builder(urlString).build();
+    SolrQuery query = new SolrQuery();
+    query.setQuery("id:" + id);
+    query.setFilterQueries("type_s:AppEntry");
+    query.setRows(1); 
+    QueryResponse response;
+    try {
+      response = solr.query(query);
+      Iterator<SolrDocument> appList = response.getResults().listIterator();
+      while (appList.hasNext()) {
+        SolrDocument d = appList.next();
+        String name = d.get("name_s").toString();
+        status.setId(name);
+        status.setState("UNKNOWN");
+        YarnClient.getStatus(status);
+      }
+    } catch (SolrServerException | IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    return status;
+  }
 }

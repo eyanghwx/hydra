@@ -60,6 +60,15 @@
     <field name="download_i">10000</field>
   </doc>
   <doc>
+    <field name="id">appStore_6</field>
+    <field name="type_s">AppStoreEntry</field>
+    <field name="org_s">openai.com</field>
+    <field name="name_s">openai-gym</field>
+    <field name="desc_s">A toolkit for developing and comparing reinforcement learning algorithms.</field>
+    <field name="like_i">360</field>
+    <field name="download_i">10231</field>
+  </doc>
+  <doc>
     <field name="type_s">docker</field>
     <field name="id">appStore_1_1</field>
     <field name="image_s">httpd</field>
@@ -139,5 +148,15 @@
     <field name="env">USER=${user}</field>
     <field name="version_s">latest</field>
     <field name="volumes">/var/lib/pcjs:/mnt/hdfs/user/${user}/pcjs</field>
+  </doc>
+  <doc>
+    <field name="type_s">docker</field>
+    <field name="id">appStore_6_1</field>
+    <field name="image_s">eyang-1.openstacklocal:5000/openai-gym</field>
+    <field name="ports">8888:8888</field>
+    <field name="ports">6006:6006</field>
+    <field name="env">USER=${user}</field>
+    <field name="version_s">latest</field>
+    <field name="volumes">/path/to/notebooks:/mnt/hdfs/user/${user}/gym</field>
   </doc>
 </add>

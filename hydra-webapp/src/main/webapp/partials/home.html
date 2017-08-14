@@ -8,18 +8,19 @@
       </form>
 
       Recommended
-      <div class="row">
-        <div class="col-xs-3 col-md-3 col-lg-3" ng-repeat="a in appStore">
+      <div ng-repeat="a in appStore" ng-if="$index % 4 == 0" class="row">
+        <div ng-repeat="i in [$index, $index + 1, $index + 2, $index + 3]" 
+             ng-if="appStore[i] != null" class="col-xs-3 col-md-3 col-lg-3">
           <div class="tile">
-            <h3>{{a.org}}</h3>
-            <h2>{{a.name}}</h2>
-            <p class="desc">{{a.desc}}</p>
+            <h3>{{appStore[i].org}}</h3>
+            <h2>{{appStore[i].name}}</h2>
+            <p class="desc">{{appStore[i].desc}}</p>
             <div class="pull-left">
-              <span class="glyphicon glyphicon-heart"></span>{{a.like}}
-              <span class="glyphicon glyphicon-cloud-download"></span>{{a.download}}
+              <span class="glyphicon glyphicon-heart"></span>{{appStore[i].like}} 
+              <span class="glyphicon glyphicon-cloud-download"></span>{{appStore[i].download}}
             </div>
             <div class="pull-right">
-              <button class="btn btn-default" ng-click="deployApp(a.id)">CREATE</button>
+              <button class="btn btn-default" ng-click="deployApp(appStore[i].id)">CREATE</button>
             </div>
           </div>
         </div>
