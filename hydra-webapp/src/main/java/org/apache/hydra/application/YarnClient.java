@@ -113,8 +113,10 @@ public class YarnClient {
         if(line.startsWith(status.getId())) {
           String[] tmp = line.split("\\s+");
           status.setState(tmp[1]);
-          URI tracker = new URI(tmp[3]);
-          status.setTracker(tracker);
+          if(tmp.length>=4) {
+            URI tracker = new URI(tmp[3]);
+            status.setTracker(tracker);
+          }
         }
       }
     } catch (IOException | URISyntaxException e) {

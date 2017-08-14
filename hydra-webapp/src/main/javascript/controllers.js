@@ -82,10 +82,42 @@ controllers.controller("AppStoreController", [ '$scope', '$rootScope', '$http',
       }
     } ]);
 
-controllers.controller("AppDetailsController", [ '$scope', '$http',
-    '$routeParams', function($scope, $http, $routeParams) {
+controllers.controller("AppDetailsController", [ '$scope', '$rootScope', '$http',
+    '$routeParams', function($scope, $rootScope, $http, $routeParams) {
       $scope.details = [];
       $scope.appName = $routeParams.id;
+
+      $rootScope.$on("RefreshAppDetails", function() {
+        $scope.refreshAppDetails();
+      });
+
+      $scope.refreshAppDetails = function() {
+        $http({
+          method : 'GET',
+          url : '/v1/appDetails/status/' + $scope.appName
+        }).then(function(data, status, headers, config) {
+          $scope.status = data.data.state;
+          $scope.tracker = data.data.tracker;
+        }, errorCallback);
+      }
+
+      $scope.stopApp = function(id) {
+        $http({
+          method : 'POST',
+          url : '/v1/appDetails/stop/' + id
+        }).then(function(data, status, header, config) {
+          $rootScope.$emit("RefreshAppDetails", {});
+        }, errorCallback);
+      }
+
+      $scope.restartApp = function(id) {
+        $http({
+          method : 'POST',
+          url : '/v1/appDetails/restart/' + id
+        }).then(function(data, status, header, config) {
+          $rootScope.$emit("RefreshAppDetails", {});
+        }, errorCallback);
+      }
 
       function successCallback(response) {
         $scope.details = response.data;

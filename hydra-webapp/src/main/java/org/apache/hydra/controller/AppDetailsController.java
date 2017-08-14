@@ -18,46 +18,26 @@
 
 package org.apache.hydra.controller;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Properties;
 
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
+import org.apache.hydra.application.HydraSolrClient;
 import org.apache.hydra.application.YarnClient;
 import org.apache.hydra.model.AppDetails;
+import org.apache.hydra.model.AppEntry;
 import org.apache.hydra.model.AppStatus;
-import org.apache.solr.client.solrj.SolrClient;
-import org.apache.solr.client.solrj.SolrQuery;
-import org.apache.solr.client.solrj.SolrServerException;
-import org.apache.solr.client.solrj.impl.HttpSolrClient;
-import org.apache.solr.client.solrj.response.QueryResponse;
-import org.apache.solr.common.SolrDocument;
 
 @Path("/appDetails")
 public class AppDetailsController {
 
-  private static String urlString;
-
   public AppDetailsController() {
-    // Locate Solr URL
-    ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-    InputStream input = classLoader.getResourceAsStream("hydra.properties");
-    Properties properties = new Properties();
-    try {
-      properties.load(input);
-      urlString = properties.getProperty("solr_url");
-    } catch (IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
   }
 
   /**
@@ -70,64 +50,55 @@ public class AppDetailsController {
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   public List<AppDetails> getDetails(@PathParam("id") String id) {
-    List<AppDetails> list = new ArrayList<AppDetails>();
-    SolrClient solr = new HttpSolrClient.Builder(urlString).build();
-    SolrQuery query = new SolrQuery();
-    query.setQuery("id:" + id + "_*");
-    query.setFilterQueries("type_s:AppDetails");
-    query.setRows(40); 
-    QueryResponse response;
-    try {
-      response = solr.query(query);
-      Iterator<SolrDocument> appList = response.getResults().listIterator();
-      while (appList.hasNext()) {
-        SolrDocument d = appList.next();
-        AppDetails entry = new AppDetails();
-        entry.setImage(d.get("image_s").toString());
-        entry.setVersion(d.get("version_s").toString());
-        String[] env = d.getFieldValues("env").toArray(new String[d.getFieldValues("env").size()]);
-        entry.setEnv(env);
-        String[] ports = d.getFieldValues("ports").toArray(new String[d.getFieldValues("ports").size()]);
-        entry.setPorts(ports);
-        String[] volumes = d.getFieldValues("volumes").toArray(new String[d.getFieldValues("volumes").size()]);
-        entry.setVolumes(volumes);
-        list.add(entry);
-      }
-    } catch (SolrServerException | IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-    return list;
+    HydraSolrClient sc = new HydraSolrClient();
+    return sc.findAppConfig(id);
   }
 
   /**
    * Check application status
+   * 
+   * @param id - Application ID
    */
   @Path("status/{id}")
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   public AppStatus getStatus(@PathParam("id") String id) {
+    HydraSolrClient sc = new HydraSolrClient();
+    AppEntry entry = sc.findAppEntry(id);
     AppStatus status = new AppStatus();
-    SolrClient solr = new HttpSolrClient.Builder(urlString).build();
-    SolrQuery query = new SolrQuery();
-    query.setQuery("id:" + id);
-    query.setFilterQueries("type_s:AppEntry");
-    query.setRows(1); 
-    QueryResponse response;
-    try {
-      response = solr.query(query);
-      Iterator<SolrDocument> appList = response.getResults().listIterator();
-      while (appList.hasNext()) {
-        SolrDocument d = appList.next();
-        String name = d.get("name_s").toString();
-        status.setId(name);
-        status.setState("UNKNOWN");
-        YarnClient.getStatus(status);
-      }
-    } catch (SolrServerException | IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
+    status.setId(entry.getName());
+    status.setState("UNKNOWN");
+    YarnClient.getStatus(status);
     return status;
+  }
+  
+  /**
+   * Stop an application
+   * 
+   * @param id - Application ID
+   */
+  @Path("stop/{id}")
+  @POST
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response stopApp(@PathParam("id") String id) {
+    HydraSolrClient sc = new HydraSolrClient();
+    String name = sc.findAppEntry(id).getName();
+    YarnClient.stopApp(name);
+    return Response.ok().build();
+  }
+  
+  /**
+   * Restart an application
+   * 
+   * @param id - Application ID
+   */
+  @Path("restart/{id}")
+  @POST
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response restartApp(@PathParam("id") String id) {
+    HydraSolrClient sc = new HydraSolrClient();
+    String name = sc.findAppEntry(id).getName();
+    YarnClient.restartApp(name);
+    return Response.ok().build();
   }
 }
