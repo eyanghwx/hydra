@@ -1,4 +1,5 @@
-var controllers = angular.module("controllers", [])
+var controllers = angular.module("controllers", []);
+
 controllers.controller("HomeController", [ '$scope', function($scope) {
   $scope.debug = false;
   $scope.title = 'Hello ';
