@@ -16,8 +16,10 @@
             <h2>{{appStore[i].name}}</h2>
             <p class="desc">{{appStore[i].desc}}</p>
             <div class="pull-left">
-              <span class="glyphicon glyphicon-heart"></span>{{appStore[i].like | counterValue}} 
-              <span class="glyphicon glyphicon-cloud-download"></span>{{appStore[i].download | counterValue}}
+              <h5>
+                <span class="glyphicon glyphicon-thumbs-up"></span>{{appStore[i].like | counterValue}} 
+                <span class="glyphicon glyphicon-cloud-download"></span>{{appStore[i].download | counterValue}}
+              </h5>
             </div>
             <div class="pull-right">
               <button class="btn btn-default" ng-click="deployApp(appStore[i].id)">CREATE</button>
