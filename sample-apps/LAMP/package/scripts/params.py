@@ -23,5 +23,5 @@ from resource_management import *
 # server configurations
 config = Script.get_config()
 
-port = config['configurations']['global']['listen_port']
-slave_port = config['configurations']['global']['slave_port']
+httpd_port = config['configurations']['global']['httpd_listen_port']
+mysqld_port = config['configurations']['global']['mysqld_listen_port']

@@ -18,10 +18,36 @@ limitations under the License.
 
 """
 
+import sys
+import os
 from resource_management import *
 
-# server configurations
-config = Script.get_config()
+class Mysqld(Script):
+  def install(self, env):
+    self.install_packages(env)
+    pass
 
-port = config['configurations']['global']['listen_port']
-slave_port = config['configurations']['global']['slave_port']
+  def configure(self, env):
+    import params
+    env.set_params(params)
+
+  def start(self, env):
+    import params
+    env.set_params(params)
+    self.configure(env)
+    process_cmd = format("/usr/bin/docker run -i --name mysqld -p {mysqld_port}:{mysqld_port} -e MYSQL_RANDOM_ROOT_PASSWORD=true eyang-1.openstacklocal:5000/mysql:latest")
+    os.system(process_cmd)
+
+  def stop(self, env):
+    import params
+    env.set_params(params)
+    process_cmd = format("/usr/bin/docker rm -f mysqld")
+    os.system(process_cmd)
+
+  def status(self, env):
+    import params
+    env.set_params(params)
+    pass
+
+if __name__ == "__main__":
+  Mysqld().execute()

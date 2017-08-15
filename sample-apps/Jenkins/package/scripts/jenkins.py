@@ -35,7 +35,7 @@ class Jenkins(Script):
     import params
     env.set_params(params)
     self.configure(env)
-    process_cmd = format("/usr/bin/docker run -it --name jenkins -p {port}:{port} -p {slave_port}:{slave_port} eyang-1.openstacklocal:5000/jenkins:latest")
+    process_cmd = format("/usr/bin/docker run -i --name jenkins -p {port}:{port} -p {slave_port}:{slave_port} eyang-1.openstacklocal:5000/jenkins:latest")
     os.system(process_cmd)
 
   def stop(self, env):

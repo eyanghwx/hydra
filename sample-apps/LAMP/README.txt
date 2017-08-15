@@ -15,13 +15,13 @@
    limitations under the License.
 -->
 
-How to create a Slider app package for jenkins
+How to create a Slider app package for LAMP (Linux Apache MySQL PHP)
 
-Create a zip package at the root of the package (<slider enlistment>/jenkins/)
-  zip -r Jenkins-1.0.0.zip .
+Create a zip package at the root of the package (<slider enlistment>/LAMP/)
+  zip -r LAMP-1.0.0.zip .
 
 Verify the content using  
-  unzip -l "$@" Jenkins-1.0.0.zip
+  unzip -l "$@" LAMP-1.0.0.zip
 
 appConfig-default.json and resources-default.json are not required to be packaged.
 These files are included as reference configuration for Slider apps and are suitable
