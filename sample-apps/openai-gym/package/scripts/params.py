@@ -24,3 +24,4 @@ from resource_management import *
 config = Script.get_config()
 
 port = config['configurations']['global']['listen_port']
+tensorPort = config['configurations']['global']['tensor_port']
