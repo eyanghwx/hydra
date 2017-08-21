@@ -35,7 +35,7 @@ class Gym(Script):
     import params
     env.set_params(params)
     self.configure(env)
-    process_cmd = format("/usr/bin/docker run -dit --name gym -p {port}:{port} -p {tensorPort}:{tensorPort} -v /mnt/hdfs/user/spark/notebooks:/mnt/notebooks eyang-1.openstacklocal:5000/openai-gym:latest")
+    process_cmd = format("/usr/bin/docker run -u=1011:1001 -v /mnt/hdfs/user/spark:/mnt/notebooks -v /mnt/hdfs/user/spark/.jupyter:/.jupyter -v /mnt/hdfs/user/spark/.local:/.local --name gym -p {port}:{port} -p {tensorPort}:{tensorPort} eyang-1.openstacklocal:5000/openai-gym:latest")
     os.system(process_cmd)
 
   def stop(self, env):
