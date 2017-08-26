@@ -8,13 +8,14 @@
 </div>
 
 <div class="row">
-  <div class="col-xs-12 col-md-12 col-lg-12" ng-repeat="docker in details">
+  <div class="col-xs-12 col-md-12 col-lg-12" ng-repeat="docker in details.yarnfile.components">
     <div class="tile">
-      <h3>{{docker.image}}</h3>
+      <h3>{{docker.name}}</h3>
+      <p>Artifact: {{docker.artifact.id}}</p>
       <p>Version: {{docker.version}}</p>
       <p>Ports: {{docker.ports}}</p>
       <p>Volumes: {{docker.volumes}}</p>
-      <p>Environments: {{docker.env}}</p>
+      <p>Environments: {{docker.configuration.env}}</p>
     </div>
   </div>
 </div>

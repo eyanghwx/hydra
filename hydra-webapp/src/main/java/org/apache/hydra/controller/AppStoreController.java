@@ -18,16 +18,21 @@
 
 package org.apache.hydra.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import org.apache.hydra.application.HydraSolrClient;
 import org.apache.hydra.model.AppStoreEntry;
+import org.apache.hydra.model.Application;
 
 @Path("/appStore")
 public class AppStoreController {
@@ -61,5 +66,21 @@ public class AppStoreController {
   public List<AppStoreEntry> search(@QueryParam("q") String keyword) {
     HydraSolrClient sc = new HydraSolrClient();
     return sc.search(keyword);
+  }
+  
+  /**
+   * Register an application
+   */
+  @POST
+  @Path("register")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response register(Application app) {
+    try {
+      HydraSolrClient sc = new HydraSolrClient();
+      sc.register(app);
+    } catch (IOException e) {
+      return Response.status(Status.BAD_REQUEST).entity(e.getMessage()).build();
+    }
+    return Response.status(Status.ACCEPTED).build();
   }
 }

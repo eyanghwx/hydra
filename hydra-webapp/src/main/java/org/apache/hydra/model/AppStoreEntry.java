@@ -31,6 +31,7 @@ public class AppStoreEntry {
   private String desc;
   private long like;
   private long download;
+  private Application app;
 
   public String getOrg() {
     return org;
@@ -78,6 +79,14 @@ public class AppStoreEntry {
 
   public void setId(String id) {
     this.id = id;
+  }
+
+  public Application getApp() {
+    return app;
+  }
+
+  public void setApp(Application app) {
+    this.app = app;
   }
 
 }

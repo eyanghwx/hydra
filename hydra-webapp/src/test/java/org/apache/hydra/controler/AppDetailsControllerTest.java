@@ -19,12 +19,11 @@
 package org.apache.hydra.controler;
 
 import org.apache.hydra.controller.AppDetailsController;
-import org.apache.hydra.model.AppDetails;
+import org.apache.hydra.model.AppEntry;
 import org.junit.Before;
 import org.junit.Test;
 
 import javax.ws.rs.Path;
-import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -42,7 +41,7 @@ public class AppDetailsControllerTest {
 
     @Test
     public void testGetDetails() throws Exception {
-        final List<AppDetails> result = this.controller.getDetails("application 1");
+        final AppEntry result = this.controller.getDetails("application 1");
         assertNotNull(result);
     }
 

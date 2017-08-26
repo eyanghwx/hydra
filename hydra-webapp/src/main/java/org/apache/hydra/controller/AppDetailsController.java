@@ -18,8 +18,6 @@
 
 package org.apache.hydra.controller;
 
-import java.util.List;
-
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -28,9 +26,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.apache.hadoop.yarn.service.api.records.Application;
+import org.apache.hadoop.yarn.service.api.records.ApplicationState;
 import org.apache.hydra.application.HydraSolrClient;
 import org.apache.hydra.application.YarnClient;
-import org.apache.hydra.model.AppDetails;
 import org.apache.hydra.model.AppEntry;
 import org.apache.hydra.model.AppStatus;
 
@@ -49,9 +48,9 @@ public class AppDetailsController {
   @Path("config/{id}")
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  public List<AppDetails> getDetails(@PathParam("id") String id) {
+  public AppEntry getDetails(@PathParam("id") String id) {
     HydraSolrClient sc = new HydraSolrClient();
-    return sc.findAppConfig(id);
+    return sc.findAppEntry(id);
   }
 
   /**
@@ -82,8 +81,10 @@ public class AppDetailsController {
   @Produces(MediaType.APPLICATION_JSON)
   public Response stopApp(@PathParam("id") String id) {
     HydraSolrClient sc = new HydraSolrClient();
-    String name = sc.findAppEntry(id).getName();
-    YarnClient.stopApp(name);
+    AppEntry app = sc.findAppEntry(id);
+    Application yarnApp = app.getYarnfile();
+    yarnApp.setState(ApplicationState.STOPPED);
+    YarnClient.stopApp(app.getId(), yarnApp);
     return Response.ok().build();
   }
   
@@ -97,8 +98,10 @@ public class AppDetailsController {
   @Produces(MediaType.APPLICATION_JSON)
   public Response restartApp(@PathParam("id") String id) {
     HydraSolrClient sc = new HydraSolrClient();
-    String name = sc.findAppEntry(id).getName();
-    YarnClient.restartApp(name);
+    AppEntry app = sc.findAppEntry(id);
+    Application yarnApp = app.getYarnfile();
+    yarnApp.setState(ApplicationState.STARTED);
+    YarnClient.restartApp(app.getId(), yarnApp);
     return Response.ok().build();
   }
 }

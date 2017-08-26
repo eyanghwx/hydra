@@ -28,6 +28,7 @@ public class AppEntry {
   private String id;
   private String name;
   private String app;
+  private org.apache.hadoop.yarn.service.api.records.Application yarnfile;
 
   public String getId() {
     return id;
@@ -51,6 +52,14 @@ public class AppEntry {
 
   public void setApp(String app) {
     this.app = app;
+  }
+
+  public org.apache.hadoop.yarn.service.api.records.Application getYarnfile() {
+    return yarnfile;
+  }
+
+  public void setYarnfile(org.apache.hadoop.yarn.service.api.records.Application yarnfile) {
+    this.yarnfile = yarnfile;
   }
 
 }
