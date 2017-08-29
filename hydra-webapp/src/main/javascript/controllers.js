@@ -46,6 +46,9 @@ controllers.controller("AppListController", [ '$scope', '$rootScope', '$http',
 
 controllers.controller("AppStoreController", [ '$scope', '$rootScope', '$http',
     function($scope, $rootScope, $http) {
+      $scope.canDeployApp = function() {
+        return false;
+      };
       $scope.appStore = [];
       $scope.searchText = null;
 
@@ -85,6 +88,9 @@ controllers.controller("AppStoreController", [ '$scope', '$rootScope', '$http',
 
 controllers.controller("AppDetailsController", [ '$scope', '$rootScope', '$http',
     '$routeParams', function($scope, $rootScope, $http, $routeParams) {
+      $scope.canDeployApp = function() {
+        return true;
+      };
       $scope.details = [];
       $scope.appName = $routeParams.id;
 
@@ -96,10 +102,7 @@ controllers.controller("AppDetailsController", [ '$scope', '$rootScope', '$http'
         $http({
           method : 'GET',
           url : '/v1/appDetails/status/' + $scope.appName
-        }).then(function(data, status, headers, config) {
-          $scope.status = data.data.state;
-          $scope.tracker = data.data.tracker;
-        }, errorCallback);
+        }).then(successCallback, errorCallback);
       }
 
       $scope.stopApp = function(id) {
@@ -133,11 +136,77 @@ controllers.controller("AppDetailsController", [ '$scope', '$rootScope', '$http'
         url : '/v1/appDetails/config/' + $scope.appName
       }).then(successCallback, errorCallback);
 
+      $rootScope.$emit("RefreshAppDetails", {});
+    } ]);
+
+controllers.controller("NewAppController", [ '$scope', '$rootScope', '$http', function($scope, $rootScope, $http) {
+    $scope.details = {
+        "name" : "",
+        "organization" : "",
+        "description" : "",
+        "icon" : "",
+        "yarnfile" : {
+          "components" : [
+            {
+              "name" : "",
+              "number_of_containers" : 1,
+              "artifact" : {
+                "id": "centos:latest"
+              },
+              "resource" : {
+                "cpus" : 1,
+                "memory" : 2048
+              },
+              "configuration" : {
+                "env" : {
+                }
+              }
+            }
+          ]
+        }
+    };
+    
+    $scope.template = {
+        "name" : "",
+        "number_of_containers" : 1,
+        "artifact" : {
+          "id": "centos:latest"
+        },
+        "resource" : {
+          "cpus" : 1,
+          "memory" : 2048
+        },
+        "configuration" : {
+          "env" : {
+          }
+        }
+    };
+    
+    $scope.message = null;
+    $scope.error = null;
+    
+    $scope.save = function() {
       $http({
-        method : 'GET',
-        url : '/v1/appDetails/status/' + $scope.appName
-      }).then(function(data, status, headers, config) {
-        $scope.status = data.data.state;
-        $scope.tracker = data.data.tracker;
-      }, errorCallback);
+        method : 'POST',
+        url : '/v1/appStore/register',
+        data : $scope.details
+      }).then(successCallback, errorCallback)
+    }
+    
+    $scope.add = function() {
+      $scope.details.yarnfile.components.push($scope.template);
+    }
+    
+    $scope.remove = function(index) {
+      $scope.details.yarnfile.components.splice(index, 1);
+    }
+
+    function successCallback(response) {
+      $scope.message = "Application published successfully.";
+    }
+
+    function errorCallback(response) {
+      $scope.error = "Error in registering application configuration.";
+    }
+
     } ]);

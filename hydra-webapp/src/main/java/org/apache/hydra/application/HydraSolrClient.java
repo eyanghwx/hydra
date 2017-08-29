@@ -1,3 +1,21 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.apache.hydra.application;
 
 import java.io.IOException;
@@ -9,6 +27,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.hydra.model.AppEntry;
 import org.apache.hydra.model.AppStoreEntry;
 import org.apache.hydra.model.Application;
@@ -26,6 +46,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class HydraSolrClient {
 
+  private static final Log LOG = LogFactory.getLog(HydraSolrClient.class);
   private static String urlString;
 
   public HydraSolrClient() {
@@ -37,8 +58,7 @@ public class HydraSolrClient {
       properties.load(input);
       urlString = properties.getProperty("solr_url");
     } catch (IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LOG.error("Error reading hydra configuration: ", e);
     }
   }
 
@@ -65,8 +85,7 @@ public class HydraSolrClient {
         apps.add(entry);
       }
     } catch (SolrServerException | IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LOG.error("Error getting a list of recommended applications: ", e);
     }
     return apps;
   }
@@ -99,8 +118,7 @@ public class HydraSolrClient {
         apps.add(entry);
       }
     } catch (SolrServerException | IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LOG.error("Error in searching for applications: ", e);
     }
     return apps;
   }
@@ -129,8 +147,7 @@ public class HydraSolrClient {
         list.add(entry);
       }
     } catch (SolrServerException | IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LOG.error("Error in listing deployed applications: ", e);
     }
     return list;
   }
@@ -159,42 +176,10 @@ public class HydraSolrClient {
       }
       solr.close();
     } catch (SolrServerException | IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LOG.error("Error in finding deployed application: " + id, e);
     }
     return entry;
   }
-  
-/*  public List<AppDetails> findAppConfig(String id) {
-    List<AppDetails> list = new ArrayList<AppDetails>();
-    SolrClient solr = new HttpSolrClient.Builder(urlString).build();
-    SolrQuery query = new SolrQuery();
-    query.setQuery("id:" + id + "_*");
-    query.setFilterQueries("type_s:AppDetails");
-    query.setRows(40); 
-    QueryResponse response;
-    try {
-      response = solr.query(query);
-      Iterator<SolrDocument> appList = response.getResults().listIterator();
-      while (appList.hasNext()) {
-        SolrDocument d = appList.next();
-        AppDetails entry = new AppDetails();
-        entry.setImage(d.get("image_s").toString());
-        entry.setVersion(d.get("version_s").toString());
-        String[] env = d.getFieldValues("env").toArray(new String[d.getFieldValues("env").size()]);
-        entry.setEnv(env);
-        String[] ports = d.getFieldValues("ports").toArray(new String[d.getFieldValues("ports").size()]);
-        entry.setPorts(ports);
-        String[] volumes = d.getFieldValues("volumes").toArray(new String[d.getFieldValues("volumes").size()]);
-        entry.setVolumes(volumes);
-        list.add(entry);
-      }
-      solr.close();
-    } catch (SolrServerException | IOException e) {
-      // TODO Auto-generated catch block
-    }
-    return list;
-  }*/
 
   public org.apache.hadoop.yarn.service.api.records.Application deployApp(String id) throws SolrServerException, IOException {
     long download = 0;
@@ -227,38 +212,19 @@ public class HydraSolrClient {
     }
     
     // increment download count for application
-    String appInstanceId = id + "_" + download;
 
     if (yarnApp!=null) {
       // Register deployed application instance with AppList
       yarnApp.setName(name);
       SolrInputDocument request = new SolrInputDocument();
       request.addField("type_s", "AppEntry");
-      request.addField("id", appInstanceId);
+      request.addField("id", name);
       request.addField("name_s", name);
       request.addField("app_s", entry.getOrg()+"/"+entry.getName());
       request.addField("yarnfile_s", mapper.writeValueAsString(yarnApp));
       docs.add(request);
     }
     
-    // Register docker container instances with associated AppEntry
-    SolrQuery findDockers = new SolrQuery();
-    findDockers.setQuery("id:" + id + "_*");
-    findDockers.setFilterQueries("type_s:docker");
-    findDockers.setRows(100);
-
-    QueryResponse findDockerResult = solr.query(findDockers);
-    Iterator<SolrDocument> dockerList = findDockerResult.getResults().listIterator();
-    int i = 0;
-    while (dockerList.hasNext()) {
-      SolrDocument doc = dockerList.next();
-      SolrInputDocument buffer = convertSolrDocument(doc);
-      String dockerId = appInstanceId + "_" + i;
-      buffer.setField("id", dockerId);
-      i++;
-      docs.add(buffer);
-    }
-
     // Commit Solr changes.
     UpdateResponse detailsResponse = solr.add(docs);
     if (detailsResponse.getStatus() != 0) {
@@ -267,19 +233,6 @@ public class HydraSolrClient {
     solr.commit();
     solr.close();
     return yarnApp;
-  }
-
-  private SolrInputDocument convertSolrDocument(SolrDocument doc) {
-    Collection<String> names = doc.getFieldNames();
-    SolrInputDocument s = new SolrInputDocument();
-    for (String name : names) {
-      if (name.equals("type_s")) {
-        s.addField("type_s", "AppDetails");
-      } else if(!name.equals("_version_")) {
-        s.addField(name, doc.getFieldValues(name));
-      }
-    }
-    return s;
   }
 
   private SolrInputDocument incrementDownload(SolrDocument doc, long download) {
@@ -301,8 +254,7 @@ public class HydraSolrClient {
       solr.commit();
       solr.close();
     } catch (SolrServerException | IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      LOG.error("Error in removing deployed application: "+id, e);
     }    
   }
 

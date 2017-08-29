@@ -3,6 +3,10 @@
   height: 200px;
 }
 
+.panel {
+  border: 1px solid #cdcdcd;
+}
+
 .desc {
   overflow: hidden;
   text-overflow: ellipsis;

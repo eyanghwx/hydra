@@ -25,13 +25,15 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import org.apache.hadoop.yarn.service.api.records.Application;
 import org.apache.hadoop.yarn.service.api.records.ApplicationState;
 import org.apache.hydra.application.HydraSolrClient;
 import org.apache.hydra.application.YarnClient;
 import org.apache.hydra.model.AppEntry;
-import org.apache.hydra.model.AppStatus;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 @Path("/appDetails")
 public class AppDetailsController {
@@ -61,14 +63,11 @@ public class AppDetailsController {
   @Path("status/{id}")
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  public AppStatus getStatus(@PathParam("id") String id) {
+  public AppEntry getStatus(@PathParam("id") String id) {
     HydraSolrClient sc = new HydraSolrClient();
-    AppEntry entry = sc.findAppEntry(id);
-    AppStatus status = new AppStatus();
-    status.setId(entry.getName());
-    status.setState("UNKNOWN");
-    YarnClient.getStatus(status);
-    return status;
+    AppEntry appEntry = sc.findAppEntry(id);
+    YarnClient.getStatus(appEntry);
+    return appEntry;
   }
   
   /**
@@ -84,7 +83,11 @@ public class AppDetailsController {
     AppEntry app = sc.findAppEntry(id);
     Application yarnApp = app.getYarnfile();
     yarnApp.setState(ApplicationState.STOPPED);
-    YarnClient.stopApp(app.getId(), yarnApp);
+    try {
+      YarnClient.stopApp(yarnApp);
+    } catch (JsonProcessingException e) {
+      return Response.status(Status.BAD_REQUEST).build();
+    }
     return Response.ok().build();
   }
   
@@ -101,7 +104,11 @@ public class AppDetailsController {
     AppEntry app = sc.findAppEntry(id);
     Application yarnApp = app.getYarnfile();
     yarnApp.setState(ApplicationState.STARTED);
-    YarnClient.restartApp(app.getId(), yarnApp);
+    try {
+      YarnClient.restartApp(yarnApp);
+    } catch (JsonProcessingException e) {
+      return Response.status(Status.BAD_REQUEST).build();
+    }
     return Response.ok().build();
   }
 }
