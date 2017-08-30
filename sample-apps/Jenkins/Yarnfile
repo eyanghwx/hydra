@@ -1,0 +1,31 @@
+{
+  "name": "Jenkins",
+  "organization": "Jenkins-ci.org",
+  "description": "The leading open source automation server",
+  "icon": "",
+  "lifetime": "3600",
+  "components": [
+    {
+      "name": "jenkins",
+      "number_of_containers": 1,
+      "artifact": {
+        "id": "eyang-1.openstacklocal:5000/jenkins:latest",
+        "type": "DOCKER"
+      },
+      "launch_command": "",
+      "resource": {
+        "cpus": 1,
+        "memory": "2048"
+      },
+      "configuration": {
+        "env": {
+        },
+        "files": [
+        ]
+      }
+    }
+  ],
+  "quicklinks": {
+    "Jenkins UI": "http://jenkins.${SERVICE_NAME}.${USER}.${DOMAIN}:8080/"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "name": "openai-gym",
+  "organization": "openai.com",
+  "description": "A toolkit for developing and comparing reinforcement learning algorithms.",
+  "icon": "",
+  "lifetime": "3600",
+  "components": [
+    {
+      "name": "openai-gym",
+      "number_of_containers": 1,
+      "artifact": {
+        "id": "eyang-1.openstacklocal:5000/openai-gym:latest",
+        "type": "DOCKER"
+      },
+      "launch_command": "",
+      "resource": {
+        "cpus": 1,
+        "memory": "2048"
+      },
+      "configuration": {
+        "env": {
+        },
+        "files": [
+        ]
+      }
+    }
+  ],
+  "quicklinks": {
+    "Jupyter UI": "http://openai-gym.${SERVICE_NAME}.${USER}.${DOMAIN}:8888/",
+    "Tensorflow UI": "http://openai-gym.${SERVICE_NAME}.${USER}.${DOMAIN}:6006/"
+  }
+}

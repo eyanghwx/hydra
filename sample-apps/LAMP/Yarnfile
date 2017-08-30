@@ -1,0 +1,50 @@
+{
+  "name": "LAMP",
+  "organization": "Hortonworks",
+  "description": "Linux Apache MySQL PHP web application",
+  "icon": "",
+  "lifetime": "3600",
+  "components": [
+    {
+      "name": "httpd",
+      "number_of_containers": 1,
+      "artifact": {
+        "id": "eyang-1.openstacklocal:5000/httpd:latest",
+        "type": "DOCKER"
+      },
+      "launch_command": "",
+      "resource": {
+        "cpus": 1,
+        "memory": "2048"
+      },
+      "configuration": {
+        "env": {
+        },
+        "files": [
+        ]
+      }
+    },
+    {
+      "name": "mysql",
+      "number_of_containers": 1,
+      "artifact": {
+        "id": "eyang-1.openstacklocal:5000/mysql:latest",
+        "type": "DOCKER"
+      },
+      "launch_command": "",
+      "resource": {
+        "cpus": 1,
+        "memory": "2048"
+      },
+      "configuration": {
+        "env": {
+        },
+        "files": [
+        ]
+      }
+    }
+  ],
+  "quicklinks": {
+    "Apache Document Root": "http://lamp.${SERVICE_NAME}.${USER}.${DOMAIN}/"
+  }
+}

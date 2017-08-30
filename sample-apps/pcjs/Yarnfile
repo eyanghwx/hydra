@@ -1,0 +1,31 @@
+{
+  "name": "pcjs",
+  "organization": "pcjs.org",
+  "description": "The original IBM PC simulation that runs in your web browser.",
+  "icon": "",
+  "lifetime": "3600",
+  "components": [
+    {
+      "name": "pcjs",
+      "number_of_containers": 1,
+      "artifact": {
+        "id": "eyang-1.openstacklocal:5000/pcjs:latest",
+        "type": "DOCKER"
+      },
+      "launch_command": "",
+      "resource": {
+        "cpus": 1,
+        "memory": "2048"
+      },
+      "configuration": {
+        "env": {
+        },
+        "files": [
+        ]
+      }
+    }
+  ],
+  "quicklinks": {
+    "Pcjs UI": "http://pcjs.${SERVICE_NAME}.${USER}.${DOMAIN}:8080/"
+  }
+}
