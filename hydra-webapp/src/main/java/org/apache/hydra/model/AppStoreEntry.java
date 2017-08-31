@@ -29,6 +29,7 @@ public class AppStoreEntry {
   private String org;
   private String name;
   private String desc;
+  private String icon = "/css/img/feather.png";
   private long like;
   private long download;
   private Application app;
@@ -87,6 +88,14 @@ public class AppStoreEntry {
 
   public void setApp(Application app) {
     this.app = app;
+  }
+
+  public String getIcon() {
+    return icon;
+  }
+
+  public void setIcon(String icon) {
+    this.icon = icon;
   }
 
 }

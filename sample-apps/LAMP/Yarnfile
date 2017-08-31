@@ -2,7 +2,7 @@
   "name": "LAMP",
   "organization": "Hortonworks",
   "description": "Linux Apache MySQL PHP web application",
-  "icon": "",
+  "icon": "/css/img/hwx_logo.png",
   "lifetime": "3600",
   "components": [
     {

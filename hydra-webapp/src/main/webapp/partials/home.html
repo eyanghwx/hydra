@@ -1,3 +1,5 @@
+<div class="toparea"><div class="pattern-wrapper"></div></div>
+<div class="container content toparea pattern-wrapper">
       <form>
         <div class="input-group input-group-lg">
           <div class="input-group-addon">
@@ -8,24 +10,34 @@
       </form>
 
       <p></p>
-      <p>Recommended</p>
+      <p class="recommended">Recommended</p>
 
       <div ng-repeat="a in appStore" ng-if="$index % 4 == 0" class="row">
-        <div ng-repeat="i in [$index, $index + 1, $index + 2, $index + 3]" 
+        <div ng-repeat="i in [$index, $index + 1, $index + 2, $index + 3]"
              ng-if="appStore[i] != null" class="col-xs-3 col-md-3 col-lg-3">
-          <div class="tile">
-            <h3>{{appStore[i].org}}</h3>
-            <h2>{{appStore[i].name}}</h2>
+          <div class="tile mdl-shadow-4dp">
+            <div class="hexa">
+              <div class="hex1">
+                <div class="hex2">
+                  <img src="{{appStore[i].icon}}" alt="" width="128" height="128" />
+                </div>
+              </div>
+            </div>
+            <div class="card-title">
+              <h3>{{appStore[i].org}}</h3>
+              <h2>{{appStore[i].name}}</h2>
+            </div>
             <p class="desc">{{appStore[i].desc}}</p>
+          </div>
+          <div class="card-footer">
             <div class="pull-left">
-              <h5>
-                <span class="glyphicon glyphicon-thumbs-up"></span>{{appStore[i].like | counterValue}} 
-                <span class="glyphicon glyphicon-cloud-download"></span>{{appStore[i].download | counterValue}}
-              </h5>
+                <!-- <span class="glyphicon glyphicon-thumbs-up"></span> {{appStore[i].like | counterValue}} -->
+                <span class="glyphicon glyphicon-cloud-download"></span> {{appStore[i].download | counterValue}}
             </div>
             <div class="pull-right">
-              <button class="btn btn-default" ng-click="deployApp(appStore[i].id)">CREATE</button>
+              <button class="btn btn-secondary" ng-click="deployApp(appStore[i].id)">CREATE</button>
             </div>
           </div>
         </div>
       </div>
+</div>

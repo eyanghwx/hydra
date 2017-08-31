@@ -1,49 +1,50 @@
-<div class="row">
-  <div class="col-xs-12 col-md-12 col-lg-12">
-    <a ng-click="stopApp(appName)" class="btn btn-default"><span class="glyphicon glyphicon-stop"></span> Stop</a>
-    <a ng-click="restartApp(appName)" class="btn btn-default"><span class="glyphicon glyphicon-refresh"></span> Restart</a>
-    <div style="display:inline-block;" ng-repeat="(key, value) in details.yarnfile.quicklinks">
-      <a href="{{value}}" class="btn btn-default"><span class="glyphicon glyphicon-new-window"></span> {{key}}</a>
+<div class="container content">
+  <div class="row">
+    <div class="col-xs-12 col-md-12 col-lg-12">
+      <a ng-click="stopApp(appName)" class="btn btn-secondary"><span class="glyphicon glyphicon-stop"></span> Stop</a>
+      <a ng-click="restartApp(appName)" class="btn btn-secondary"><span class="glyphicon glyphicon-refresh"></span> Restart</a>
+      <div style="display:inline-block;" ng-repeat="(key, value) in details.yarnfile.quicklinks">
+        <a href="{{value}}" class="btn btn-secondary"><span class="glyphicon glyphicon-new-window"></span> {{key}}</a>
+      </div>
     </div>
   </div>
-</div>
 
-<div class="row">
-  <div class="col-xs-12 col-md-12 col-lg-12" ng-repeat="docker in details.yarnfile.components">
-    <div class="panel">
-      <h3>{{docker.name}}</h3>
-      <p>Artifact: {{docker.artifact.id}}</p>
-      <p>Number of containers: {{docker.number_of_containers}}</p>
-      <p>CPU: {{docker.resource.cpus}}</p>
-      <p>Memory: {{docker.resource.memory}}</p>
-      <p>Environments
+  <div class="row">
+    <div class="col-xs-12 col-md-12 col-lg-12" ng-repeat="docker in details.yarnfile.components">
+      <div class="panel">
+        <h3>{{docker.name}}</h3>
+        <p>Artifact: {{docker.artifact.id}}</p>
+        <p>Number of containers: {{docker.number_of_containers}}</p>
+        <p>CPU: {{docker.resource.cpus}}</p>
+        <p>Memory: {{docker.resource.memory}}</p>
+        <p>Environments
+          <table class="table">
+            <tbody class="table-striped">
+              <tr ng-repeat="(key, value) in docker.configuration.env">
+                <td>{{key}}</td><td>{{value}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </p>
         <table class="table">
+          <thead>
+            <tr>
+              <th>Hostname</th>
+              <th>Container ID</th>
+              <th>Launch Time</th>
+              <th>State</th>
+            </tr>
+          </thead>
           <tbody class="table-striped">
-            <tr ng-repeat="(key, value) in docker.configuration.env">
-              <td>{{key}}</td><td>{{value}}</td>
+            <tr ng-repeat="container in docker.containers">
+              <td>{{container.bare_host}}</td>
+              <td>{{container.id}}</td>
+              <td>{{container.launch_time}}</td>
+              <td>{{container.state}}</td>
             </tr>
           </tbody>
         </table>
-      </p>
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Hostname</th>
-            <th>Container ID</th>
-            <th>Launch Time</th>
-            <th>State</th>
-          </tr>
-        </thead>
-        <tbody class="table-striped">
-          <tr ng-repeat="container in docker.containers">
-            <td>{{container.bare_host}}</td>
-            <td>{{container.id}}</td>
-            <td>{{container.launch_time}}</td>
-            <td>{{container.state}}</td>
-          </tr>
-        </tbody>
-      </table>
+      </div>
     </div>
   </div>
 </div>
-

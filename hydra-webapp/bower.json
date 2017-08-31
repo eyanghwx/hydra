@@ -26,7 +26,7 @@
         "angular-mocks": "1.6.4",
         "angular-route": "1.6.4",
         "angular": "1.6.4",
-        "bootstrap": "3.3.0",
+        "bootstrap": "3.3.7",
         "font-awsome": "4.7.0"
     },
     "main": "src/main/webapp/index.html"

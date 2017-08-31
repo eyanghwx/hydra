@@ -18,8 +18,6 @@
 
 package org.apache.hydra.model;
 
-import java.net.URI;
-
 import javax.xml.bind.annotation.XmlRootElement;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -36,7 +34,7 @@ public class Application extends org.apache.hadoop.yarn.service.api.records.Appl
   
   public String organization;
   public String description;
-  public URI icon;
+  public String icon;
 
   @JsonProperty("organization")
   public String getOrganization() {
@@ -55,10 +53,10 @@ public class Application extends org.apache.hadoop.yarn.service.api.records.Appl
   }
 
   @JsonProperty("icon")
-  public URI getIcon() {
+  public String getIcon() {
     return icon;
   }
-  public void setIcon(URI icon) {
+  public void setIcon(String icon) {
     this.icon = icon;
   }
 }

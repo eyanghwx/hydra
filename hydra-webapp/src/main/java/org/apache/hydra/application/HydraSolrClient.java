@@ -80,6 +80,9 @@ public class HydraSolrClient {
         entry.setOrg(d.get("org_s").toString());
         entry.setName(d.get("name_s").toString());
         entry.setDesc(d.get("desc_s").toString());
+        if (d.get("icon_s")!=null) {
+          entry.setIcon(d.get("icon_s").toString());
+        }
         entry.setLike(Integer.valueOf(d.get("like_i").toString()));
         entry.setDownload(Integer.valueOf(d.get("download_i").toString()));
         apps.add(entry);
@@ -269,6 +272,9 @@ public class HydraSolrClient {
       buffer.setField("org_s", app.getOrganization());
       buffer.setField("name_s", app.getName());
       buffer.setField("desc_s", app.getDescription());
+      if (app.getIcon() != null) {
+        buffer.setField("icon_s", app.getIcon());
+      }
       buffer.setField("type_s", "AppStoreEntry");
       buffer.setField("like_i", 0);
       buffer.setField("download_i", 0);
