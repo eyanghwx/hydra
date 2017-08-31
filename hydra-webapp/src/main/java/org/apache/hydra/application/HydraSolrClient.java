@@ -26,12 +26,15 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
+import java.util.Random;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hydra.model.AppEntry;
 import org.apache.hydra.model.AppStoreEntry;
 import org.apache.hydra.model.Application;
+import org.apache.hydra.utils.RandomWord;
+import org.apache.hydra.utils.WordLengthException;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
@@ -191,7 +194,17 @@ public class HydraSolrClient {
     Collection<SolrInputDocument> docs = new HashSet<SolrInputDocument>();
     SolrClient solr = new HttpSolrClient.Builder(urlString).build();
     // Find application information from AppStore
-    String name = "c" + java.util.UUID.randomUUID().toString().substring(0, 11);
+    String name;
+    try {
+      Random r = new Random();
+      int Low = 3;
+      int High = 10;
+      int seed = r.nextInt(High-Low) + Low;
+      int seed2 = r.nextInt(High-Low) + Low;
+      name = RandomWord.getNewWord(seed).toLowerCase() + "_" + RandomWord.getNewWord(seed2).toLowerCase();
+    } catch (WordLengthException e) {
+      name = "c" + java.util.UUID.randomUUID().toString().substring(0, 11);
+    }
     org.apache.hadoop.yarn.service.api.records.Application yarnApp = null;
     SolrQuery query = new SolrQuery();
     query.setQuery("id:" + id);
