@@ -145,25 +145,28 @@ controllers.controller("NewAppController", [ '$scope', '$rootScope', '$http', fu
         "organization" : "",
         "description" : "",
         "icon" : "",
-        "yarnfile" : {
-          "components" : [
-            {
-              "name" : "",
-              "number_of_containers" : 1,
-              "artifact" : {
-                "id": "centos:latest"
-              },
-              "resource" : {
-                "cpus" : 1,
-                "memory" : 2048
-              },
-              "configuration" : {
-                "env" : {
-                }
+        "components" : [
+          {
+            "name" : "",
+            "number_of_containers" : 1,
+            "artifact" : {
+              "id": "centos:latest"
+            },
+            "resource" : {
+              "cpus" : 1,
+              "memory" : 2048
+            },
+            "run_privileged_container" : false,
+            "dependencies" : [],
+            "placement_policy" : {
+              "label" : ""
+            },
+            "configuration" : {
+              "env" : {
               }
             }
-          ]
-        }
+          }
+        ]
     };
     
     $scope.template = {
@@ -176,6 +179,11 @@ controllers.controller("NewAppController", [ '$scope', '$rootScope', '$http', fu
           "cpus" : 1,
           "memory" : 2048
         },
+        "run_privileged_container" : false,
+        "dependencies" : [],
+        "placement_policy" : {
+          "label" : ""
+        },
         "configuration" : {
           "env" : {
           }
@@ -186,19 +194,20 @@ controllers.controller("NewAppController", [ '$scope', '$rootScope', '$http', fu
     $scope.error = null;
     
     $scope.save = function() {
+      console.log(JSON.stringify($scope.details));
       $http({
         method : 'POST',
         url : '/v1/appStore/register',
-        data : $scope.details
+        data : JSON.stringify($scope.details)
       }).then(successCallback, errorCallback)
     }
     
     $scope.add = function() {
-      $scope.details.yarnfile.components.push($scope.template);
+      $scope.details.components.push($scope.template);
     }
     
     $scope.remove = function(index) {
-      $scope.details.yarnfile.components.splice(index, 1);
+      $scope.details.components.splice(index, 1);
     }
 
     function successCallback(response) {

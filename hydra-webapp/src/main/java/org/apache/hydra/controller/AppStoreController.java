@@ -30,12 +30,17 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.hydra.application.HydraSolrClient;
+
 import org.apache.hydra.model.AppStoreEntry;
 import org.apache.hydra.model.Application;
 
 @Path("/appStore")
 public class AppStoreController {
+
+  private static final Log LOG = LogFactory.getLog(AppStoreController.class);
 
   public AppStoreController() {
   }
@@ -76,6 +81,7 @@ public class AppStoreController {
   @Produces(MediaType.APPLICATION_JSON)
   public Response register(Application app) {
     try {
+      LOG.info(app.toString());
       HydraSolrClient sc = new HydraSolrClient();
       sc.register(app);
     } catch (IOException e) {

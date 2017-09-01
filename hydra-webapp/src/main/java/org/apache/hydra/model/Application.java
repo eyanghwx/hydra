@@ -59,4 +59,5 @@ public class Application extends org.apache.hadoop.yarn.service.api.records.Appl
   public void setIcon(String icon) {
     this.icon = icon;
   }
+  
 }

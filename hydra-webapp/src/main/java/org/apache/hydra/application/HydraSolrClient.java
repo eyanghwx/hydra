@@ -294,6 +294,7 @@ public class HydraSolrClient {
       
       // Keep only YARN data model for yarnfile field
       String yarnFile = mapper.writeValueAsString(app);
+      LOG.info("app:"+yarnFile);
       org.apache.hadoop.yarn.service.api.records.Application yarnApp = mapper.readValue(yarnFile, org.apache.hadoop.yarn.service.api.records.Application.class);
       buffer.setField("yarnfile_s", mapper.writeValueAsString(yarnApp));
 
