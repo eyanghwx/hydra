@@ -44,8 +44,13 @@ public class AppDetailsController {
   /**
    * List detail information about the deployed application.
    * 
-   * @param id
-   * @return
+   * @apiGroup AppDetailController
+   * @apiName getDetails
+   * @api {post} /appDetails/config/{id}  Check config of application instance.
+   * @apiParam {String} id Application ID to fetch configuration.
+   * @apiSuccess {Object} AppEntry Application configuration.
+   * @param id - Application ID
+   * @return application entry-
    */
   @Path("config/{id}")
   @GET
@@ -58,7 +63,13 @@ public class AppDetailsController {
   /**
    * Check application status
    * 
+   * @apiGroup AppDetailController
+   * @apiName getStatus
+   * @api {post} /appDetails/status/{id}  Check status of application instance.
+   * @apiParam {String} id Application ID to check.
+   * @apiSuccess {Object} text Give status
    * @param id - Application ID
+   * @return application entry
    */
   @Path("status/{id}")
   @GET
@@ -73,7 +84,13 @@ public class AppDetailsController {
   /**
    * Stop an application
    * 
+   * @apiGroup AppDetailController
+   * @apiName stopApp
+   * @api {post} /appDetails/stop/{id}  Stop one instance of application.
+   * @apiParam {String} id Application ID to stop.
+   * @apiSuccess {String} text Give deployment status
    * @param id - Application ID
+   * @return Web response code
    */
   @Path("stop/{id}")
   @POST
@@ -94,7 +111,13 @@ public class AppDetailsController {
   /**
    * Restart an application
    * 
+   * @apiGroup AppDetailController
+   * @apiName restartApp
+   * @api {post} /appDetails/restart/{id}  Restart one instance of application.
+   * @apiParam {String} id Application ID to restart.
+   * @apiSuccess {String} text Give deployment status
    * @param id - Application ID
+   * @return Web response code
    */
   @Path("restart/{id}")
   @POST

@@ -32,9 +32,9 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 public class Application extends org.apache.hadoop.yarn.service.api.records.Application {
   private static final long serialVersionUID = -1776203219305414248L;
   
-  public String organization;
-  public String description;
-  public String icon;
+  private String organization;
+  private String description;
+  private String icon;
 
   @JsonProperty("organization")
   public String getOrganization() {

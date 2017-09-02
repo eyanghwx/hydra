@@ -35,6 +35,7 @@
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <vendor.loc>src/main/webapp/vendor</vendor.loc>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <dependency.locations.enabled>false</dependency.locations.enabled>
     </properties>
 
     <dependencies>
@@ -135,6 +136,7 @@
             <artifactId>jackson-annotations</artifactId>
             <version>2.7.8</version>
         </dependency>
+
     </dependencies>
     <build>
         <finalName>${artifact.name}</finalName>
@@ -268,15 +270,26 @@
                         <goals>
                             <goal>exec</goal>
                         </goals>
+                        <configuration>
+                            <executable>bower</executable>
+                            <arguments>
+                                <argument>install</argument>
+                            </arguments>
+                            <workingDirectory>${basedir}</workingDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>apidoc</executable>
+                            <commandlineArgs>-i src/main/java -o ${project.build.directory}/site/apidocs</commandlineArgs>
+                            <silent>true</silent>
+                        </configuration>
                     </execution>
                 </executions>
-                <configuration>
-                    <executable>bower</executable>
-                    <arguments>
-                        <argument>install</argument>
-                    </arguments>
-                    <workingDirectory>${basedir}</workingDirectory>
-                </configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-clean-plugin</artifactId>
@@ -292,17 +305,17 @@
                     </filesets>
                 </configuration>
             </plugin>
-            <!--<plugin>-->
-            <!--<groupId>org.eclipse.jetty</groupId>-->
-            <!--<artifactId>jetty-maven-plugin</artifactId>-->
-            <!--<version>9.2.2.v20140723</version>-->
-            <!--<configuration>-->
-            <!--<scanIntervalSeconds>10</scanIntervalSeconds>-->
-            <!--<webApp>-->
-            <!--<contextPath>/${artifact.name}</contextPath>-->
-            <!--</webApp>-->
-            <!--</configuration>-->
-            <!--</plugin>-->
         </plugins>
     </build>
+
+    <reporting>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-project-info-reports-plugin</artifactId>
+          <version>2.9</version>
+        </plugin>
+      </plugins>
+    </reporting>
+
 </project>

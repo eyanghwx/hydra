@@ -48,6 +48,11 @@ public class AppStoreController {
   /**
    * Display the most frequently used applications on Hydra home page.
    * 
+   * @apiGroup AppStoreController
+   * @apiName get
+   * @api {post} /appDetails/config/{id}  Check config of application instance.
+   * @apiParam {String} id Application ID to fetch configuration.
+   * @apiSuccess {Object} AppEntry Application configuration.
    * @return - List of YARN applications
    */
 
@@ -62,7 +67,12 @@ public class AppStoreController {
   /**
    * Search for yarn applications from solr.
    * 
-   * @param keyword
+   * @apiGroup AppStoreController
+   * @apiName search
+   * @api {get} /appStore/search  Find application from appstore.
+   * @apiParam {String} q Keyword to search.
+   * @apiSuccess {Object} AppStoreEntry List of matched applications.
+   * @param keyword - search for keyword
    * @return - List of YARN applications matching keyword search.
    */
   @GET
@@ -75,6 +85,14 @@ public class AppStoreController {
   
   /**
    * Register an application
+   * 
+   * @apiGroup AppStoreController
+   * @apiName register
+   * @api {get} /appStore/register  Register an application in appstore.
+   * @apiParam {Object} app Application definition.
+   * @apiSuccess {String} Code Application register result.
+   * @param app - Yarnfile in JSON form
+   * @return Web response
    */
   @POST
   @Path("register")

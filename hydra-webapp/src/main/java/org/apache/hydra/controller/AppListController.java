@@ -21,6 +21,7 @@ package org.apache.hydra.controller;
 import java.io.IOException;
 import java.util.List;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -38,15 +39,26 @@ import org.apache.hydra.application.YarnClient;
 import org.apache.hydra.model.AppEntry;
 import org.apache.solr.client.solrj.SolrServerException;
 
+/**
+ * Application deployment module
+ * 
+ * @author eyang
+ *
+ */
 @Path("/appList")
+@Produces({ MediaType.APPLICATION_JSON })
 public class AppListController {
   
   public AppListController() {
   }
 
   /**
-   * Get list of deployed applications.
+   * Get Application List
    * 
+   * @apiGroup AppListController
+   * @apiName get
+   * @api {get} /appList  Get list of deployed applications.
+   * @apiSuccess {Object[]}  List<AppEntry> List of deployed Applications.
    * @return - Active application deployed by current user.
    */
   @GET
@@ -58,6 +70,15 @@ public class AppListController {
 
   /**
    * Delete an application
+   * 
+   * @apiGroup AppListController
+   * @apiName delete
+   * @api {delete} /appList  Delete one instance of application.
+   * @apiParam {String} id Application name to delete.
+   * @apiSuccess {String} text Delete request accepted
+   * @param id - application ID
+   * @param name - application name
+   * @return Web response
    */
   @DELETE
   @Path("{id}/{name}")
@@ -71,9 +92,18 @@ public class AppListController {
 
   /**
    * Deploy an application
+   * 
+   * @apiGroup AppListController
+   * @apiName deploy
+   * @api {post} /appList/{id}  Deploy one instance of application.
+   * @apiParam {String} id Application ID to deploy.
+   * @apiSuccess {String} text Give deployment status
+   * @param id - application ID
+   * @return Web response
    */
   @POST
   @Path("{id}")
+  @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
   public Response deploy(@PathParam("id") String id) {
     HydraSolrClient sc = new HydraSolrClient();

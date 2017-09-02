@@ -2,7 +2,7 @@
     "name": "HYDRA",
     "private": true,
     "version": "0.0.0",
-    "description": "A starter project for AngularJS combined with java and maven",
+    "description": "YARN Appstore",
     "repository": "git://git.apache.org/hydra.git",
     "license": "Apache 2.0",
     "devDependencies": {
