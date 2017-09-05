@@ -37,7 +37,7 @@ import org.apache.hydra.application.HydraSolrClient;
 import org.apache.hydra.model.AppStoreEntry;
 import org.apache.hydra.model.Application;
 
-@Path("/appStore")
+@Path("/app_store")
 public class AppStoreController {
 
   private static final Log LOG = LogFactory.getLog(AppStoreController.class);
@@ -50,12 +50,27 @@ public class AppStoreController {
    * 
    * @apiGroup AppStoreController
    * @apiName get
-   * @api {post} /appDetails/config/{id}  Check config of application instance.
-   * @apiParam {String} id Application ID to fetch configuration.
+   * @api {get} /app_store/recommended  Display recommended applications.
    * @apiSuccess {Object} AppEntry Application configuration.
+   * @apiSuccessExample {json} Success-Response:
+   *     HTTP/1.1 200 OK
+   *     [  
+   *        {  
+   *           "id":"96b7833a-e3",
+   *           "org":"Hortonworks",
+   *           "name":"LAMP",
+   *           "desc":"Linux Apache MySQL PHP web application",
+   *           "icon":"/css/img/hwx_logo.png",
+   *           "like":0,
+   *           "download":0,
+   *           "app":null
+   *        },
+   *        {
+   *        ...
+   *        }
+   *     ]
    * @return - List of YARN applications
    */
-
   @GET
   @Path("recommended")
   @Produces(MediaType.APPLICATION_JSON)
@@ -69,9 +84,26 @@ public class AppStoreController {
    * 
    * @apiGroup AppStoreController
    * @apiName search
-   * @api {get} /appStore/search  Find application from appstore.
+   * @api {get} /app_store/search  Find application from appstore.
    * @apiParam {String} q Keyword to search.
    * @apiSuccess {Object} AppStoreEntry List of matched applications.
+   * @apiSuccessExample {json} Success-Response:
+   *     HTTP/1.1 200 OK
+   *     [  
+   *        {  
+   *           "id":"96b7833a-e3",
+   *           "org":"Hortonworks",
+   *           "name":"LAMP",
+   *           "desc":"Linux Apache MySQL PHP web application",
+   *           "icon":"/css/img/hwx_logo.png",
+   *           "like":0,
+   *           "download":0,
+   *           "app":null
+   *        },
+   *        {
+   *        ...
+   *        }
+   *     ]
    * @param keyword - search for keyword
    * @return - List of YARN applications matching keyword search.
    */
@@ -88,9 +120,42 @@ public class AppStoreController {
    * 
    * @apiGroup AppStoreController
    * @apiName register
-   * @api {get} /appStore/register  Register an application in appstore.
+   * @api {post} /app_store/register  Register an application in appstore.
    * @apiParam {Object} app Application definition.
-   * @apiSuccess {String} Code Application register result.
+   * @apiParamExample {json} Request-Example:
+   *     {
+   *       "name": "Jenkins",
+   *       "organization": "Jenkins-ci.org",
+   *       "description": "The leading open source automation server",
+   *       "icon": "/css/img/jenkins.png",
+   *       "lifetime": "3600",
+   *       "components": [
+   *         {
+   *           "name": "jenkins",
+   *           "number_of_containers": 1,
+   *           "artifact": {
+   *             "id": "eyang-1.openstacklocal:5000/jenkins:latest",
+   *             "type": "DOCKER"
+   *           },
+   *           "launch_command": "",
+   *           "resource": {
+   *             "cpus": 1,
+   *             "memory": "2048"
+   *           },
+   *           "configuration": {
+   *             "env": {
+   *             },
+   *             "files": [
+   *             ]
+   *           }
+   *         }
+   *       ],
+   *       "quicklinks": {
+   *         "Jenkins UI": "http://jenkins.${SERVICE_NAME}.${USER}.${DOMAIN}:8080/"
+   *       }
+   *     }
+   * @apiSuccess {String} Response Application register result.
+   * @apiError BadRequest Error in process application registration.
    * @param app - Yarnfile in JSON form
    * @return Web response
    */

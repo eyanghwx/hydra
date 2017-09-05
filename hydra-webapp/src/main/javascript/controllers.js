@@ -24,14 +24,14 @@ controllers.controller("AppListController", [ '$scope', '$rootScope', '$http',
       $scope.refreshList = function() {
         $http({
           method : 'GET',
-          url : '/v1/appList'
+          url : '/v1/app_list'
         }).then(successCallback, errorCallback);
       }
 
       $scope.deleteApp = function(id, name) {
         $http({
           method: 'DELETE',
-          url: '/v1/appList/' + id + '/' + name
+          url: '/v1/app_list/' + id + '/' + name
         }).then(function(response) {
           $rootScope.$emit("RefreshAppList", {});
         }, function(response) {
@@ -40,7 +40,7 @@ controllers.controller("AppListController", [ '$scope', '$rootScope', '$http',
       }
       $http({
         method : 'GET',
-        url : '/v1/appList'
+        url : '/v1/app_list'
       }).then(successCallback, errorCallback);
     } ]);
 
@@ -63,7 +63,7 @@ controllers.controller("AppStoreController", [ '$scope', '$rootScope', '$http',
       $scope.deployApp = function(id) {
         $http({
           method : 'POST',
-          url : '/v1/appList/' + id
+          url : '/v1/app_list/' + id
         }).then(function(data, status, headers, config) {
           $rootScope.$emit("RefreshAppList", {});
           window.location = '/#!/app/' + data.data.id;
@@ -74,14 +74,14 @@ controllers.controller("AppStoreController", [ '$scope', '$rootScope', '$http',
 
       $http({
         method : 'GET',
-        url : '/v1/appStore/recommended'
+        url : '/v1/app_store/recommended'
       }).then(successCallback, errorCallback);
 
       $scope.change = function(text) {
         var q = $scope.searchText;
         $http({
           method : 'GET',
-          url : '/v1/appStore/search?q=' + q
+          url : '/v1/app_store/search?q=' + q
         }).then(successCallback, errorCallback);
       }
     } ]);
@@ -101,14 +101,14 @@ controllers.controller("AppDetailsController", [ '$scope', '$rootScope', '$http'
       $scope.refreshAppDetails = function() {
         $http({
           method : 'GET',
-          url : '/v1/appDetails/status/' + $scope.appName
+          url : '/v1/app_details/status/' + $scope.appName
         }).then(successCallback, errorCallback);
       }
 
       $scope.stopApp = function(id) {
         $http({
           method : 'POST',
-          url : '/v1/appDetails/stop/' + id
+          url : '/v1/app_details/stop/' + id
         }).then(function(data, status, header, config) {
           $rootScope.$emit("RefreshAppDetails", {});
         }, errorCallback);
@@ -117,7 +117,7 @@ controllers.controller("AppDetailsController", [ '$scope', '$rootScope', '$http'
       $scope.restartApp = function(id) {
         $http({
           method : 'POST',
-          url : '/v1/appDetails/restart/' + id
+          url : '/v1/app_details/restart/' + id
         }).then(function(data, status, header, config) {
           $rootScope.$emit("RefreshAppDetails", {});
         }, errorCallback);
@@ -133,7 +133,7 @@ controllers.controller("AppDetailsController", [ '$scope', '$rootScope', '$http'
 
       $http({
         method : 'GET',
-        url : '/v1/appDetails/config/' + $scope.appName
+        url : '/v1/app_details/config/' + $scope.appName
       }).then(successCallback, errorCallback);
 
       $rootScope.$emit("RefreshAppDetails", {});
@@ -197,7 +197,7 @@ controllers.controller("NewAppController", [ '$scope', '$rootScope', '$http', fu
       console.log(JSON.stringify($scope.details));
       $http({
         method : 'POST',
-        url : '/v1/appStore/register',
+        url : '/v1/app_store/register',
         data : JSON.stringify($scope.details)
       }).then(successCallback, errorCallback)
     }

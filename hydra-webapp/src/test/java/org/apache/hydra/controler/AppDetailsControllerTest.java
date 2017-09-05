@@ -54,7 +54,7 @@ public class AppDetailsControllerTest {
 
         final Path path = this.controller.getClass()
                                         .getAnnotation(Path.class);
-        assertThat("The path is /appDetails", path.value(), is("/appDetails"));
+        assertThat("The path is /app_details", path.value(), is("/app_details"));
     }
 
 }

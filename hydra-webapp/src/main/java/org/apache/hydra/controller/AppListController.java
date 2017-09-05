@@ -45,7 +45,7 @@ import org.apache.solr.client.solrj.SolrServerException;
  * @author eyang
  *
  */
-@Path("/appList")
+@Path("/app_list")
 @Produces({ MediaType.APPLICATION_JSON })
 public class AppListController {
   
@@ -57,8 +57,69 @@ public class AppListController {
    * 
    * @apiGroup AppListController
    * @apiName get
-   * @api {get} /appList  Get list of deployed applications.
+   * @api {get} /app_list  Get list of deployed applications.
    * @apiSuccess {Object[]}  List<AppEntry> List of deployed Applications.
+   * @apiSuccessExample {json} Success-Response:
+   *     HTTP/1.1 200 OK
+   *     [  
+   *        {  
+   *           "id":"howita_man",
+   *           "name":"howita_man",
+   *           "app":"Jenkins-ci.org/Jenkins",
+   *           "yarnfile":{  
+   *              "name":"howita_man",
+   *              "lifetime":3600,
+   *              "containers":[  
+   *              ],
+   *              "components":[  
+   *                 {  
+   *                    "name":"jenkins",
+   *                    "dependencies":[  
+   *                    ],
+   *                    "artifact":{  
+   *                       "id":"eyang-1.openstacklocal:5000/jenkins:latest",
+   *                       "type":"DOCKER"
+   *                    },
+   *                    "launch_command":"",
+   *                    "resource":{  
+   *                       "uri":null,
+   *                       "profile":null,
+   *                       "cpus":1,
+   *                       "memory":"2048"
+   *                    },
+   *                    "number_of_containers":1,
+   *                    "run_privileged_container":false,
+   *                    "configuration":{  
+   *                       "properties":{  
+   *                       },
+   *                       "env":{  
+   *                       },
+   *                       "files":[  
+   *                       ]
+   *                    },
+   *                    "quicklinks":[  
+   *                    ],
+   *                    "containers":[  
+   *                    ]
+   *                 }
+   *              ],
+   *              "configuration":{  
+   *                 "properties":{  
+   *                 },
+   *                 "env":{  
+   *                 },
+   *                 "files":[  
+   *                 ]
+   *              },
+   *              "quicklinks":{  
+   *                 "Jenkins UI":"http://jenkins.${SERVICE_NAME}.${USER}.${DOMAIN}:8080/"
+   *              }
+   *           }
+   *        },
+   *        {
+   *        ...
+   *        }
+   *     ]
    * @return - Active application deployed by current user.
    */
   @GET
@@ -73,7 +134,7 @@ public class AppListController {
    * 
    * @apiGroup AppListController
    * @apiName delete
-   * @api {delete} /appList  Delete one instance of application.
+   * @api {delete} /app_list  Delete one instance of application.
    * @apiParam {String} id Application name to delete.
    * @apiSuccess {String} text Delete request accepted
    * @param id - application ID
@@ -95,9 +156,10 @@ public class AppListController {
    * 
    * @apiGroup AppListController
    * @apiName deploy
-   * @api {post} /appList/{id}  Deploy one instance of application.
+   * @api {post} /app_list/{id}  Deploy one instance of application.
    * @apiParam {String} id Application ID to deploy.
    * @apiSuccess {String} text Give deployment status
+   * @apiError BadRequest Unable to deploy requested application.
    * @param id - application ID
    * @return Web response
    */

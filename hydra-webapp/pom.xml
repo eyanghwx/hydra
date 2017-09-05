@@ -266,6 +266,7 @@
                 <version>1.3.2</version>
                 <executions>
                     <execution>
+                        <id>bower-install</id>
                         <phase>generate-sources</phase>
                         <goals>
                             <goal>exec</goal>
@@ -279,11 +280,13 @@
                         </configuration>
                     </execution>
                     <execution>
+                        <id>apidocs</id>
                         <phase>package</phase>
                         <goals>
                             <goal>exec</goal>
                         </goals>
                         <configuration>
+                            <outputFile>${project.build.directory}/apidocs.log</outputFile>
                             <executable>apidoc</executable>
                             <commandlineArgs>-i src/main/java -o ${project.build.directory}/site/apidocs</commandlineArgs>
                             <silent>true</silent>

@@ -35,7 +35,7 @@ import org.apache.hydra.model.AppEntry;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-@Path("/appDetails")
+@Path("/app_details")
 public class AppDetailsController {
 
   public AppDetailsController() {
@@ -46,9 +46,65 @@ public class AppDetailsController {
    * 
    * @apiGroup AppDetailController
    * @apiName getDetails
-   * @api {post} /appDetails/config/{id}  Check config of application instance.
+   * @api {get} /app_details/config/{id}  Check config of application instance.
    * @apiParam {String} id Application ID to fetch configuration.
    * @apiSuccess {Object} AppEntry Application configuration.
+   * @apiSuccessExample {json} Success-Response:
+   *     HTTP/1.1 200 OK
+   *     {  
+   *       "id":"howita_man",
+   *        "name":"howita_man",
+   *        "app":"Jenkins-ci.org/Jenkins",
+   *        "yarnfile":{  
+   *           "name":"howita_man",
+   *           "lifetime":3600,
+   *           "containers":[
+   *           ],
+   *           "components":[  
+   *              {  
+   *                 "name":"jenkins",
+   *                 "dependencies":[
+   *                 ],
+   *                 "artifact":{  
+   *                    "id":"eyang-1.openstacklocal:5000/jenkins:latest",
+   *                    "type":"DOCKER"
+   *                 },
+   *                 "launch_command":"",
+   *                 "resource":{  
+   *                    "uri":null,
+   *                    "profile":null,
+   *                    "cpus":1,
+   *                    "memory":"2048"
+   *                 },
+   *                 "number_of_containers":1,
+   *                 "run_privileged_container":false,
+   *                 "configuration":{
+   *                    "properties":{
+   *                    },
+   *                    "env":{
+   *                    },
+   *                    "files":[
+   *                    ]
+   *                 },
+   *                 "quicklinks":[
+   *                 ],
+   *                 "containers":[
+   *                 ]
+   *              }
+   *           ],
+   *           "configuration":{
+   *              "properties":{
+   *              },
+   *              "env":{
+   *              },
+   *              "files":[
+   *              ]
+   *           },
+   *           "quicklinks":{  
+   *              "Jenkins UI":"http://jenkins.howita_man.yarn.${DOMAIN}:8080/"
+   *           }
+   *        }
+   *     }
    * @param id - Application ID
    * @return application entry-
    */
@@ -65,8 +121,72 @@ public class AppDetailsController {
    * 
    * @apiGroup AppDetailController
    * @apiName getStatus
-   * @api {post} /appDetails/status/{id}  Check status of application instance.
+   * @api {get} /app_details/status/{id}  Check status of application instance.
    * @apiParam {String} id Application ID to check.
+   * @apiSuccessExample {json} Success-Response:
+   *     HTTP/1.1 200 OK
+   *     {  
+   *       "id":"howita_man",
+   *        "name":"howita_man",
+   *        "app":"Jenkins-ci.org/Jenkins",
+   *        "yarnfile":{  
+   *           "name":"howita_man",
+   *           "lifetime":3099,
+   *           "containers":[
+   *           ],
+   *           "id":"application_1503694240849_0043",
+   *           "components":[  
+   *              {  
+   *                 "name":"jenkins",
+   *                 "dependencies":[
+   *                 ],
+   *                 "artifact":{  
+   *                    "id":"eyang-1.openstacklocal:5000/jenkins:latest",
+   *                    "type":"DOCKER"
+   *                 },
+   *                 "launch_command":"",
+   *                 "resource":{  
+   *                    "uri":null,
+   *                    "profile":null,
+   *                    "cpus":1,
+   *                    "memory":"2048"
+   *                 },
+   *                 "number_of_containers":1,
+   *                 "run_privileged_container":false,
+   *                 "configuration":{
+   *                    "properties":{
+   *                    },
+   *                    "env":{
+   *                    },
+   *                    "files":[
+   *                    ]
+   *                 },
+   *                 "quicklinks":[
+   *                 ],
+   *                 "containers":[  
+   *                    {  
+   *                       "id":"container_1503694240849_0043_01_000002",
+   *                       "launch_time":1504630535403,
+   *                       "bare_host":"eyang-4.openstacklocal",
+   *                       "state":"READY",
+   *                       "component_name":"jenkins-0"
+   *                    }
+   *                 ]
+   *              }
+   *           ],
+   *           "configuration":{
+   *              "properties":{
+   *              },
+   *              "env":{
+   *              },
+   *              "files":[
+   *              ]
+   *           },
+   *           "quicklinks":{  
+   *              "Jenkins UI":"http://jenkins.howita_man.yarn.${DOMAIN}:8080/"
+   *           }
+   *        }
+   *     }
    * @apiSuccess {Object} text Give status
    * @param id - Application ID
    * @return application entry
@@ -86,9 +206,10 @@ public class AppDetailsController {
    * 
    * @apiGroup AppDetailController
    * @apiName stopApp
-   * @api {post} /appDetails/stop/{id}  Stop one instance of application.
+   * @api {post} /app_details/stop/{id}  Stop one instance of application.
    * @apiParam {String} id Application ID to stop.
    * @apiSuccess {String} text Give deployment status
+   * @apiError BadRequest Requested application does not stop.
    * @param id - Application ID
    * @return Web response code
    */
@@ -113,9 +234,10 @@ public class AppDetailsController {
    * 
    * @apiGroup AppDetailController
    * @apiName restartApp
-   * @api {post} /appDetails/restart/{id}  Restart one instance of application.
+   * @api {post} /app_details/restart/{id}  Restart one instance of application.
    * @apiParam {String} id Application ID to restart.
    * @apiSuccess {String} text Give deployment status
+   * @apiError BadRequest Requested application does not restart.
    * @param id - Application ID
    * @return Web response code
    */
