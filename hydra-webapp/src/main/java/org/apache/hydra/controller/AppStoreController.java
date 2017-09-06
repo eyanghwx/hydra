@@ -30,8 +30,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.hydra.application.HydraSolrClient;
 
 import org.apache.hydra.model.AppStoreEntry;
@@ -39,8 +37,6 @@ import org.apache.hydra.model.Application;
 
 @Path("/app_store")
 public class AppStoreController {
-
-  private static final Log LOG = LogFactory.getLog(AppStoreController.class);
 
   public AppStoreController() {
   }
@@ -164,7 +160,15 @@ public class AppStoreController {
   @Produces(MediaType.APPLICATION_JSON)
   public Response register(Application app) {
     try {
-      LOG.info(app.toString());
+      if (app.getName()==null) {
+        throw new IOException("Application name can not be empty.");
+      }
+      if (app.getOrganization()==null) {
+        throw new IOException("Application organization can not be empty.");
+      }
+      if (app.getDescription()==null) {
+        throw new IOException("Application description can not be empty.");
+      }
       HydraSolrClient sc = new HydraSolrClient();
       sc.register(app);
     } catch (IOException e) {

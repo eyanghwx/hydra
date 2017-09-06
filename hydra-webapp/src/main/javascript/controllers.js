@@ -11,9 +11,11 @@ controllers.controller("AppListController", [ '$scope', '$rootScope', '$http',
 
       function successCallback(response) {
         $scope.appList = response.data;
+        $rootScope.$emit("hideLoadScreen", {});
       }
 
       function errorCallback(response) {
+        $rootScope.$emit("hideLoadScreen", {});
         console.log("Error in downloading application list");
       }
 
@@ -29,6 +31,7 @@ controllers.controller("AppListController", [ '$scope', '$rootScope', '$http',
       }
 
       $scope.deleteApp = function(id, name) {
+        $rootScope.$emit("showLoadScreen", {});
         $http({
           method: 'DELETE',
           url: '/v1/app_list/' + id + '/' + name
@@ -61,6 +64,7 @@ controllers.controller("AppStoreController", [ '$scope', '$rootScope', '$http',
       }
 
       $scope.deployApp = function(id) {
+        $rootScope.$emit("showLoadScreen", {});
         $http({
           method : 'POST',
           url : '/v1/app_list/' + id
@@ -124,7 +128,13 @@ controllers.controller("AppDetailsController", [ '$scope', '$rootScope', '$http'
       }
 
       function successCallback(response) {
-        $scope.details = response.data;
+        if (response.data.yarnfile.state!="ACCEPTED") {
+          $scope.details = response.data;
+        } else {
+          // When application is in accepted state, it does not
+          // have components detail, hence we update states only.
+          $scope.details.yarnfile.state="ACCEPTED";
+        }
       }
 
       function errorCallback(response) {
@@ -219,3 +229,16 @@ controllers.controller("NewAppController", [ '$scope', '$rootScope', '$http', fu
     }
 
     } ]);
+
+controllers.controller("LoadScreenController", [ '$scope', '$rootScope', '$http', function($scope, $rootScope, $http) {
+  $scope.loadScreen = "hide";
+  
+  $rootScope.$on("showLoadScreen", function() {
+    $scope.loadScreen = "show";
+  });
+
+  $rootScope.$on("hideLoadScreen", function() {
+    $scope.loadScreen = "hide";
+  });
+
+}]);

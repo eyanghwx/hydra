@@ -59,7 +59,7 @@ public class YarnClient {
     Client client = Client.create();
 
     WebResource webResource = client
-       .resource(YARN_SERVICES_API_URL + "/services/v1/applications");
+       .resource(YARN_SERVICES_API_URL + "/ws/v1/services");
 
     ObjectMapper mapper = new ObjectMapper();
     mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -67,8 +67,9 @@ public class YarnClient {
     try {
       response = webResource.type(MediaType.APPLICATION_JSON).post(ClientResponse.class, mapper.writeValueAsString(app));
       if (response.getStatus() >= 299) {
+        String message = response.getEntity(String.class);
         throw new RuntimeException("Failed : HTTP error code : "
-       + response.getStatus());
+       + response.getStatus() + " error: " + message);
       }
     } catch (UniformInterfaceException | JsonProcessingException e) {
       LOG.error("Error in deploying application: ", e);
@@ -79,14 +80,15 @@ public class YarnClient {
     Client client = Client.create();
 
     WebResource webResource = client
-       .resource(YARN_SERVICES_API_URL + "/services/v1/applications/"+appInstanceId);
+       .resource(YARN_SERVICES_API_URL + "/ws/v1/services/"+appInstanceId);
 
     ClientResponse response;
     try {
       response = webResource.type(MediaType.APPLICATION_JSON).delete(ClientResponse.class);
       if (response.getStatus() >= 299) {
+        String message = response.getEntity(String.class);
         throw new RuntimeException("Failed : HTTP error code : "
-       + response.getStatus());
+       + response.getStatus() + " error: " + message);
       }
     } catch (UniformInterfaceException e) {
       LOG.error("Error in deleting application: ", e);
@@ -100,14 +102,15 @@ public class YarnClient {
     String appInstanceId = app.getName();
     String yarnFile = mapper.writeValueAsString(app);
     WebResource webResource = client
-       .resource(YARN_SERVICES_API_URL + "/services/v1/applications/"+appInstanceId);
+       .resource(YARN_SERVICES_API_URL + "/ws/v1/services/"+appInstanceId);
 
     ClientResponse response;
     try {
       response = webResource.type(MediaType.APPLICATION_JSON).put(ClientResponse.class, yarnFile);
       if (response.getStatus() >= 299) {
+        String message = response.getEntity(String.class);
         throw new RuntimeException("Failed : HTTP error code : "
-       + response.getStatus());
+       + response.getStatus() + " error: " + message);
       }
     } catch (UniformInterfaceException e) {
       LOG.error("Error in restarting application: ", e);
@@ -121,14 +124,15 @@ public class YarnClient {
     String appInstanceId = app.getName();
     String yarnFile = mapper.writeValueAsString(app);
     WebResource webResource = client
-        .resource(YARN_SERVICES_API_URL + "/services/v1/applications/"+appInstanceId);
+        .resource(YARN_SERVICES_API_URL + "/ws/v1/services/"+appInstanceId);
 
      ClientResponse response;
      try {
        response = webResource.type(MediaType.APPLICATION_JSON).put(ClientResponse.class, yarnFile);
        if (response.getStatus() >= 299) {
+         String message = response.getEntity(String.class);
          throw new RuntimeException("Failed : HTTP error code : "
-        + response.getStatus());
+        + response.getStatus() + " error: " + message);
        }
      } catch (UniformInterfaceException e) {
        LOG.error("Error in stopping application: ", e);
@@ -141,7 +145,7 @@ public class YarnClient {
     Application app = null;
     Client client = Client.create();
     WebResource webResource = client
-        .resource(YARN_SERVICES_API_URL + "/services/v1/applications/"+entry.getName());
+        .resource(YARN_SERVICES_API_URL + "/ws/v1/services/"+entry.getName());
      try {
        String yarnFile = webResource.accept(MediaType.APPLICATION_JSON).get(String.class);
        app = mapper.readValue(yarnFile, org.apache.hadoop.yarn.service.api.records.Application.class);

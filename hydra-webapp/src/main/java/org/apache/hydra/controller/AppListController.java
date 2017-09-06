@@ -63,8 +63,8 @@ public class AppListController {
    *     HTTP/1.1 200 OK
    *     [  
    *        {  
-   *           "id":"howita_man",
-   *           "name":"howita_man",
+   *           "id":"howita-man",
+   *           "name":"howita-man",
    *           "app":"Jenkins-ci.org/Jenkins",
    *           "yarnfile":{  
    *              "name":"howita_man",

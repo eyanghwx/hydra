@@ -201,7 +201,7 @@ public class HydraSolrClient {
       int High = 10;
       int seed = r.nextInt(High-Low) + Low;
       int seed2 = r.nextInt(High-Low) + Low;
-      name = RandomWord.getNewWord(seed).toLowerCase() + "_" + RandomWord.getNewWord(seed2).toLowerCase();
+      name = RandomWord.getNewWord(seed).toLowerCase() + "-" + RandomWord.getNewWord(seed2).toLowerCase();
     } catch (WordLengthException e) {
       name = "c" + java.util.UUID.randomUUID().toString().substring(0, 11);
     }
