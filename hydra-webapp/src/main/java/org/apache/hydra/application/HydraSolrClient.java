@@ -65,9 +65,13 @@ public class HydraSolrClient {
     }
   }
 
+  public SolrClient getSolrClient() {
+    return new HttpSolrClient.Builder(urlString).build();
+  }
+
   public List<AppStoreEntry> getRecommendedApps() {
     List<AppStoreEntry> apps = new ArrayList<AppStoreEntry>();
-    SolrClient solr = new HttpSolrClient.Builder(urlString).build();
+    SolrClient solr = getSolrClient();
     SolrQuery query = new SolrQuery();
     query.setQuery("*:*");
     query.setFilterQueries("type_s:AppStoreEntry");
@@ -98,7 +102,7 @@ public class HydraSolrClient {
 
   public List<AppStoreEntry> search(String keyword) {
     List<AppStoreEntry> apps = new ArrayList<AppStoreEntry>();
-    SolrClient solr = new HttpSolrClient.Builder(urlString).build();
+    SolrClient solr = getSolrClient();
     SolrQuery query = new SolrQuery();
     if (keyword.length()==0) {
       query.setQuery("*:*");
@@ -134,7 +138,7 @@ public class HydraSolrClient {
     ObjectMapper mapper = new ObjectMapper();
     mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-    SolrClient solr = new HttpSolrClient.Builder(urlString).build();
+    SolrClient solr = getSolrClient();
     SolrQuery query = new SolrQuery();
     query.setQuery("*:*");
     query.setFilterQueries("type_s:AppEntry");
@@ -163,7 +167,7 @@ public class HydraSolrClient {
     ObjectMapper mapper = new ObjectMapper();
     mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-    SolrClient solr = new HttpSolrClient.Builder(urlString).build();
+    SolrClient solr = getSolrClient();
     SolrQuery query = new SolrQuery();
     query.setQuery("id:" + id);
     query.setFilterQueries("type_s:AppEntry");
@@ -180,7 +184,6 @@ public class HydraSolrClient {
         entry.setName(d.get("name_s").toString());
         entry.setYarnfile(mapper.readValue(d.get("yarnfile_s").toString(), org.apache.hadoop.yarn.service.api.records.Application.class));
       }
-      solr.close();
     } catch (SolrServerException | IOException e) {
       LOG.error("Error in finding deployed application: " + id, e);
     }
@@ -192,7 +195,7 @@ public class HydraSolrClient {
     ObjectMapper mapper = new ObjectMapper();
     mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     Collection<SolrInputDocument> docs = new HashSet<SolrInputDocument>();
-    SolrClient solr = new HttpSolrClient.Builder(urlString).build();
+    SolrClient solr = getSolrClient();
     // Find application information from AppStore
     String name;
     try {
@@ -247,7 +250,6 @@ public class HydraSolrClient {
       throw new IOException("Unable to register docker instance with application entry.");
     }
     solr.commit();
-    solr.close();
     return yarnApp;
   }
 
@@ -264,11 +266,10 @@ public class HydraSolrClient {
   }
 
   public void deleteApp(String id) {
-    SolrClient solr = new HttpSolrClient.Builder(urlString).build();
+    SolrClient solr = getSolrClient();
     try {
       solr.deleteById(id);
       solr.commit();
-      solr.close();
     } catch (SolrServerException | IOException e) {
       LOG.error("Error in removing deployed application: "+id, e);
     }    
@@ -276,7 +277,7 @@ public class HydraSolrClient {
 
   public void register(Application app) throws IOException {
     Collection<SolrInputDocument> docs = new HashSet<SolrInputDocument>();
-    SolrClient solr = new HttpSolrClient.Builder(urlString).build();
+    SolrClient solr = getSolrClient();
     ObjectMapper mapper = new ObjectMapper();
     mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     try {
@@ -305,7 +306,6 @@ public class HydraSolrClient {
         throw new IOException("Unable to register application in Application Store.");
       }
       solr.commit();
-      solr.close();
     } catch (SolrServerException | IOException e) {
       throw new IOException("Unable to register application in Application Store. "+ e.getMessage());
     }    

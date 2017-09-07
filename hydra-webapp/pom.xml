@@ -36,6 +36,9 @@
         <vendor.loc>src/main/webapp/vendor</vendor.loc>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <dependency.locations.enabled>false</dependency.locations.enabled>
+
+        <powermock.version>1.5.6</powermock.version>
+        <solr.version>6.3.0</solr.version>
     </properties>
 
     <dependencies>
@@ -49,6 +52,18 @@
             <groupId>org.mockito</groupId>
             <artifactId>mockito-all</artifactId>
             <version>1.9.5</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-module-junit4</artifactId>
+            <version>${powermock.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-api-mockito</artifactId>
+            <version>${powermock.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -94,7 +109,7 @@
         <dependency>
 	    <groupId>org.apache.solr</groupId>
             <artifactId>solr-solrj</artifactId>
-            <version>6.3.0</version>
+            <version>${solr.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>
@@ -105,6 +120,20 @@
                     <artifactId>slf4j-api</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.solr</groupId>
+            <artifactId>solr-core</artifactId>
+            <version>${solr.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.solr</groupId>
+            <artifactId>solr-test-framework</artifactId>
+            <version>${solr.version}</version>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
@@ -151,6 +180,30 @@
             </resource>
         </resources>
         <plugins>
+<!--            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.0.2</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources</id>
+                       <phase>generate-test-resources</phase>
+                       <goals>
+                           <goal>copy-resources</goal>
+                       </goals>
+                       <configuration>
+                           <outputDirectory>${project.build.directory}/solr</outputDirectory>
+                           <resources>          
+                               <resource>
+                                   <directory>src/test/resources/testdata/solr</directory>
+                                   <includes>
+                                       <include>**/*</include>
+                                   </includes>
+                               </resource>
+                           </resources>              
+                       </configuration>            
+                   </execution>
+                </executions>
+            </plugin> -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
