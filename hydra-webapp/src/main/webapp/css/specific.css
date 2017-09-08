@@ -59,6 +59,14 @@ html, body, .container {
     height: 100%;
 }
 
+.navigation-header div.btn-group div {
+    display: inline;
+}
+
+.navigation-header div.btn-group div a:hover {
+    text-decoration: none;
+}
+
 .navigation-bar-container ul.nav.side-nav-menu li.mainmenu-li {
     color: #999;
 }
