@@ -1,10 +1,5 @@
 var controllers = angular.module("controllers", []);
 
-controllers.controller("HomeController", [ '$scope', function($scope) {
-  $scope.debug = false;
-  $scope.title = 'Hello ';
-} ]);
-
 controllers.controller("AppListController", [ '$scope', '$rootScope', '$http',
     function($scope, $rootScope, $http) {
       $scope.appList = [];
@@ -95,7 +90,7 @@ controllers.controller("AppDetailsController", [ '$scope', '$rootScope', '$http'
       $scope.canDeployApp = function() {
         return true;
       };
-      $scope.details = [];
+      $scope.details = {"yarnfile":{"state":"UNKNOWN"}};
       $scope.appName = $routeParams.id;
 
       $rootScope.$on("RefreshAppDetails", function() {
@@ -128,12 +123,12 @@ controllers.controller("AppDetailsController", [ '$scope', '$rootScope', '$http'
       }
 
       function successCallback(response) {
-        if (response.data.yarnfile.state!="ACCEPTED") {
+        if (response.data.yarnfile.components.length!=0) {
           $scope.details = response.data;
         } else {
-          // When application is in accepted state, it does not
+          // When application is in accepted or failed state, it does not
           // have components detail, hence we update states only.
-          $scope.details.yarnfile.state="ACCEPTED";
+          $scope.details.yarnfile.state = response.data.yarnfile.state;
         }
       }
 
@@ -204,7 +199,6 @@ controllers.controller("NewAppController", [ '$scope', '$rootScope', '$http', fu
     $scope.error = null;
     
     $scope.save = function() {
-      console.log(JSON.stringify($scope.details));
       $http({
         method : 'POST',
         url : '/v1/app_store/register',
