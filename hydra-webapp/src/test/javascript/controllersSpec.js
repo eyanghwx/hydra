@@ -36,6 +36,15 @@ describe('Controller tests', function () {
       expect(rootScope.$emit).toHaveBeenCalledWith('RefreshAppList', {});
     });
 
+    it('should test to refresh appList', function() {
+      httpBackend.expectGET('/v1/app_list').respond(200, [{id:"jenkins",name:"jenkins",app:"",yarnfile:{}}]);
+      spyOn(rootScope, '$emit');
+      scope.$apply(function() {
+        scope.refreshList();
+      });
+      httpBackend.flush();
+      expect(rootScope.$emit).toHaveBeenCalledWith('hideLoadScreen', {});
+    })
   });
 
   // Unit test for inspect YARN application details.
