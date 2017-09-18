@@ -2,7 +2,7 @@
   "name": "LAMP",
   "organization": "Hortonworks",
   "description": "Linux Apache MySQL PHP web application",
-  "icon": "/css/img/hwx_logo.png",
+  "icon": "css/img/hwx_logo.png",
   "lifetime": "3600",
   "components": [
     {
@@ -19,6 +19,8 @@
       },
       "configuration": {
         "env": {
+          "MYSQL_HOST":"mysql.${SERVICE_NAME}.${USER}.${DOMAIN}",
+          "MYSQL_PORT":"3306"
         },
         "files": [
         ]
@@ -45,6 +47,6 @@
     }
   ],
   "quicklinks": {
-    "Apache Document Root": "http://lamp.${SERVICE_NAME}.${USER}.${DOMAIN}/"
+    "Apache Document Root": "http://httpd.${SERVICE_NAME}.${USER}.${DOMAIN}/"
   }
 }
