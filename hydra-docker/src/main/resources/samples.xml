@@ -47,7 +47,10 @@
         }
       }
     }
-  ]
+  ],
+  "quicklinks": {
+    "Httpd UI": "http://httpd.${SERVICE_NAME}.${USER}.${DOMAIN}:8080/"
+  }
 }
     </field>
   </doc>
@@ -122,7 +125,10 @@
         }
       }
     }
-  ]
+  ],
+  "quicklinks": {
+    "Jenkins UI": "http://jenkins.${SERVICE_NAME}.${USER}.${DOMAIN}:8080/"
+  }
 }
     </field>
   </doc>
@@ -171,7 +177,10 @@
         }
       }
     }
-  ]
+  ],
+  "quicklinks": {
+    "Pcjs UI": "http://pcjs.${SERVICE_NAME}.${USER}.${DOMAIN}:8088/"
+  }
 }
     </field>
   </doc>
@@ -209,7 +218,10 @@
         }
       }
     }
-  ]
+  ],
+  "quicklinks": {
+    "Jupyter UI": "http://openai-gym.${SERVICE_NAME}.${USER}.${DOMAIN}:8888/"
+  }
 }
     </field>
   </doc>
