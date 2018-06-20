@@ -22,6 +22,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import org.apache.hadoop.yarn.service.api.records.Service;
 
 @XmlType(namespace="http://hadoop.apache.org", name="AppEntry")
 @XmlRootElement
@@ -30,7 +31,7 @@ public class AppEntry {
   private String id;
   private String name;
   private String app;
-  private org.apache.hadoop.yarn.service.api.records.Application yarnfile;
+  private Service yarnfile;
 
   public String getId() {
     return id;
@@ -56,11 +57,11 @@ public class AppEntry {
     this.app = app;
   }
 
-  public org.apache.hadoop.yarn.service.api.records.Application getYarnfile() {
+  public Service getYarnfile() {
     return yarnfile;
   }
 
-  public void setYarnfile(org.apache.hadoop.yarn.service.api.records.Application yarnfile) {
+  public void setYarnfile(Service yarnfile) {
     this.yarnfile = yarnfile;
   }
 

@@ -32,7 +32,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import org.apache.hadoop.yarn.service.api.records.Application;
+import org.apache.hadoop.yarn.service.api.records.Service;
 
 import org.apache.hydra.application.HydraSolrClient;
 import org.apache.hydra.application.YarnClient;
@@ -147,7 +147,8 @@ public class AppListController {
   public Response delete(@PathParam("id") String id, @PathParam("name") String name) {
     HydraSolrClient sc = new HydraSolrClient();
     sc.deleteApp(id);
-    YarnClient.deleteApp(name);
+    YarnClient yc = new YarnClient();
+    yc.deleteApp(name);
     return Response.status(Status.ACCEPTED).build();
   }
 
@@ -169,13 +170,14 @@ public class AppListController {
   @Produces(MediaType.APPLICATION_JSON)
   public Response deploy(@PathParam("id") String id) {
     HydraSolrClient sc = new HydraSolrClient();
-    Application app;
+    Service app;
     try {
       app = sc.deployApp(id);
     } catch (SolrServerException | IOException e) {
       return Response.status(Status.BAD_REQUEST).entity(e.toString()).build();
     }
-    YarnClient.createApp(app);
+    YarnClient yc = new YarnClient();
+    yc.createApp(app);
     String output = "{\"status\":\"Application deployed.\",\"id\":\"" + app.getName() + "\"}";
     return Response.status(Status.ACCEPTED).entity(output).build();
   }

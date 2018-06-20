@@ -15,3 +15,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+mkdir -p /etc/hadoop
+tar xvf solr-6.6.0.tgz
+chmod -R 777 /solr-6.6.0/server/logs /var/log/tomcat /var/cache/tomcat /var/lib/tomcat/webapps /solr-6.6.0/server/solr
+chmod 777 /etc/tomcat
+#groupadd -g 1001 hadoop
+#useradd -u 1013 -g 1001 hbase

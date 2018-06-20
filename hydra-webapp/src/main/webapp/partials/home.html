@@ -12,22 +12,18 @@
       <p></p>
       <p class="recommended">Recommended</p>
 
-      <div ng-repeat="a in appStore" ng-if="$index % 4 == 0" class="row">
-        <div ng-repeat="i in [$index, $index + 1, $index + 2, $index + 3]"
-             ng-if="appStore[i] != null" class="col-xs-3 col-md-3 col-lg-3">
+      <div ng-repeat="a in appStore" ng-if="$index % 3 == 0" class="row">
+        <div ng-repeat="i in [$index, $index + 1, $index + 2]"
+             ng-if="appStore[i] != null" class="col-xs-4 col-md-4 col-lg-4">
           <div class="tile mdl-shadow-4dp">
-            <div class="hexa">
-              <div class="hex1">
-                <div class="hex2">
-                  <img src="{{appStore[i].icon}}" alt="" width="128" height="128" />
-                </div>
-              </div>
-            </div>
+            <img src="{{appStore[i].icon}}" alt="" width="128" height="128" />
             <div class="card-title">
               <h3>{{appStore[i].org}}</h3>
               <h2>{{appStore[i].name}}</h2>
             </div>
-            <p class="desc">{{appStore[i].desc}}</p>
+            <div class="card-desc">
+              <p>{{appStore[i].desc}}</p>
+            </div>
           </div>
           <div class="card-footer">
             <div class="pull-left">

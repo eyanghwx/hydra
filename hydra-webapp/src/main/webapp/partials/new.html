@@ -10,6 +10,10 @@
           <input type=text name="name" class="form-control" ng-model="details.name" />
         </div>
         <div class="form-group">
+          <label>Version</label>
+          <input type=text name="version" class="form-control" ng-model="details.version" />
+        </div>
+        <div class="form-group">
           <label>Description</label>
           <textarea name="desc" class="form-control" ng-model="details.description"></textarea>
         </div>
@@ -27,7 +31,7 @@
             <a class="btn btn-secondary" ng-click="remove($index)">-</a>
           </div>
           <div class="form-group">
-            <label>Name</label>
+            <label>Component Name</label>
             <input type=text name="name" class="form-control" ng-model="docker.name" />
           </div>
           <div class="form-group">
@@ -37,6 +41,10 @@
           <div class="form-group">
             <label>Number of containers</label>
             <input type=text name="artifact_id" class="form-control" ng-model="docker.number_of_containers" />
+          </div>
+          <div class="form-group">
+            <label>Launch Command</label>
+            <input type=text name="launch_command" class="form-control" ng-model="docker.launch_command" />
           </div>
           <div class="form-group">
             <label>CPU</label>
@@ -56,7 +64,7 @@
           </div>
           <div class="form-group">
             <label>Placement Policy</label>
-            <input type=text name="placement" class="form-control" ng-model="docker.placement_policy.label" />
+            <input type=text name="placement" class="form-control" ng-model="docker.placement_policy.constraints" />
           </div>
           
           <div class="form-group">
@@ -73,8 +81,8 @@
         <p>
         <a class="btn btn-secondary" ng-click="add()">+</a>
         <a class="btn btn-secondary" ng-click="save()">Publish</a>
-        <span class="bg-info" ng-if="message">{{message}}</span>
-        <span class="bg-danger ng-if="error">{{error}}</span>
+        <span class="infobox bg-info" ng-if="message">{{message}}</span>
+        <span class="infobox bg-danger" ng-if="error">{{error}}</span>
       </div>
     </div>
 </div>

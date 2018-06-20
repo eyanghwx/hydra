@@ -22,6 +22,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   height: 60px;
+  padding-right: 25px;
 }
 
 .appBanner {
@@ -154,6 +155,11 @@ ul.nav.side-nav-menu li {
   left: 128px;
 }
 
+.card-desc {
+  margin: 10px;
+  padding-right: 25px;
+}
+
 .card-footer {
   position: relative;
   margin: 5px;
@@ -216,4 +222,10 @@ ul.nav.side-nav-menu li {
 .loader img {
   width: 300px;
   height: 225px;
+}
+
+.infobox {
+    font-size:14px; 
+    margin:20px; 
+    padding:10px; 
 }

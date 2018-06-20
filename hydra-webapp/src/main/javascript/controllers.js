@@ -49,6 +49,7 @@ controllers.controller("AppListController", [ '$scope', '$rootScope', '$http',
           url: '/v1/app_list/' + id + '/' + name
         }).then(function(response) {
           $rootScope.$emit("RefreshAppList", {});
+          window.location = '/#';
         }, function(response) {
           console.log(response);
         });
@@ -102,17 +103,13 @@ controllers.controller("AppStoreController", [ '$scope', '$rootScope', '$http',
       }
     } ]);
 
-controllers.controller("AppDetailsController", [ '$scope', '$rootScope', '$http',
-    '$routeParams', function($scope, $rootScope, $http, $routeParams) {
-      $scope.canDeployApp = function() {
-        return true;
-      };
+controllers.controller("AppDetailsController", [ '$scope', '$interval', '$rootScope', '$http',
+    '$routeParams', function($scope, $interval, $rootScope, $http, $routeParams) {
       $scope.details = {"yarnfile":{"state":"UNKNOWN"}};
       $scope.appName = $routeParams.id;
-
-      $rootScope.$on("RefreshAppDetails", function() {
-        $scope.refreshAppDetails();
-      });
+      var timer = $interval(function() {
+        $rootScope.$emit("RefreshAppDetails", {});
+      }, 2000);
 
       $scope.refreshAppDetails = function() {
         $http({
@@ -139,6 +136,10 @@ controllers.controller("AppDetailsController", [ '$scope', '$rootScope', '$http'
         }, errorCallback);
       }
 
+      $scope.canDeployApp = function() {
+        return true;
+      };
+
       function successCallback(response) {
         if (response.data.yarnfile.components.length!=0) {
           $scope.details = response.data;
@@ -153,17 +154,29 @@ controllers.controller("AppDetailsController", [ '$scope', '$rootScope', '$http'
         console.log("Error in getting application detail");
       }
 
+      $rootScope.$on("RefreshAppDetails", function() {
+        $scope.refreshAppDetails();
+      });
+
+      $scope.$on("$locationChangeStart", function() {
+        $interval.cancel(timer);
+      });
+
+      $scope.$on('$destroy', function() {
+        $interval.cancel(timer);
+      });
+
       $http({
         method : 'GET',
         url : '/v1/app_details/config/' + $scope.appName
       }).then(successCallback, errorCallback);
 
-      $rootScope.$emit("RefreshAppDetails", {});
     } ]);
 
 controllers.controller("NewAppController", [ '$scope', '$rootScope', '$http', function($scope, $rootScope, $http) {
     $scope.details = {
         "name" : "",
+        "version" : "",
         "organization" : "",
         "description" : "",
         "icon" : "",
@@ -174,6 +187,7 @@ controllers.controller("NewAppController", [ '$scope', '$rootScope', '$http', fu
             "artifact" : {
               "id": "centos:latest"
             },
+            "launch_command": "",
             "resource" : {
               "cpus" : 1,
               "memory" : 2048
@@ -181,10 +195,11 @@ controllers.controller("NewAppController", [ '$scope', '$rootScope', '$http', fu
             "run_privileged_container" : false,
             "dependencies" : [],
             "placement_policy" : {
-              "label" : ""
+              "constraints" : []
             },
             "configuration" : {
               "env" : {
+                "YARN_CONTAINER_RUNTIME_DOCKER_RUN_OVERRIDE_DISABLE":"true"
               }
             }
           }
@@ -193,10 +208,12 @@ controllers.controller("NewAppController", [ '$scope', '$rootScope', '$http', fu
     
     $scope.template = {
         "name" : "",
+        "version" : "1.0",
         "number_of_containers" : 1,
         "artifact" : {
           "id": "centos:latest"
         },
+        "launch_command": "",
         "resource" : {
           "cpus" : 1,
           "memory" : 2048
@@ -204,10 +221,11 @@ controllers.controller("NewAppController", [ '$scope', '$rootScope', '$http', fu
         "run_privileged_container" : false,
         "dependencies" : [],
         "placement_policy" : {
-          "label" : ""
+          "constraints" : []
         },
         "configuration" : {
           "env" : {
+            "YARN_CONTAINER_RUNTIME_DOCKER_RUN_OVERRIDE_DISABLE":"true"
           }
         }
     };
@@ -233,6 +251,11 @@ controllers.controller("NewAppController", [ '$scope', '$rootScope', '$http', fu
 
     function successCallback(response) {
       $scope.message = "Application published successfully.";
+      setTimeout(function() {
+        $scope.$apply(function() {
+          window.location = '/#';
+        });
+      }, 5000);
     }
 
     function errorCallback(response) {

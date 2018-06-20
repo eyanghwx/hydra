@@ -15,7 +15,32 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+template_generator() {
+  REGEX='(\$\{[a-zA-Z_][a-zA-Z_0-9]*\})'
+  if [ -e $2 ]; then
+    mv -f $2 "$2.bak"
+  fi
+  cat $1 |
+  while read line ; do
+    while [[ "$line" =~ $REGEX ]] ; do
+      LHS=${BASH_REMATCH[1]}
+      RHS="$(eval echo "\"$LHS\"")"
+      line=${line//$LHS/$RHS}
+    done
+    echo $line >> $2
+  done
+}
+
+export JAVA_HOME=/usr/lib/jvm/jre
+export HADOOP_CONF_DIR=/etc/hadoop/conf
 /solr-6.6.0/bin/solr start -p 8983 -force
 /solr-6.6.0/bin/solr create_core -c hydra -force
 /solr-6.6.0//bin/post -c hydra /tmp/samples.xml
+if [ -d /etc/hadoop/conf ]; then
+  sed -i.bak 's/shared.loader=.*$/shared.loader=\/etc\/hadoop\/conf/g' /etc/tomcat/catalina.properties
+fi
+if [ -e $KEYTAB ]; then
+  export JAVA_OPTS="$JAVA_OPTS -Djava.security.auth.login.config=/etc/tomcat/jaas.config -Djava.security.krb5.conf=/etc/krb5.conf -Djavax.security.auth.useSubjectCredsOnly=false"
+  template_generator /etc/tomcat/jaas.config.template /etc/tomcat/jaas.config  
+fi
 /usr/libexec/tomcat/server start

@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Random;
 
+import org.apache.hadoop.yarn.service.api.records.Service;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hydra.model.AppEntry;
@@ -153,7 +154,7 @@ public class HydraSolrClient {
         entry.setId(d.get("id").toString());
         entry.setName(d.get("name_s").toString());
         entry.setApp(d.get("app_s").toString());
-        entry.setYarnfile(mapper.readValue(d.get("yarnfile_s").toString(), org.apache.hadoop.yarn.service.api.records.Application.class));
+        entry.setYarnfile(mapper.readValue(d.get("yarnfile_s").toString(), Service.class));
         list.add(entry);
       }
     } catch (SolrServerException | IOException e) {
@@ -182,7 +183,7 @@ public class HydraSolrClient {
         entry.setId(d.get("id").toString());
         entry.setApp(d.get("app_s").toString());
         entry.setName(d.get("name_s").toString());
-        entry.setYarnfile(mapper.readValue(d.get("yarnfile_s").toString(), org.apache.hadoop.yarn.service.api.records.Application.class));
+        entry.setYarnfile(mapper.readValue(d.get("yarnfile_s").toString(), Service.class));
       }
     } catch (SolrServerException | IOException e) {
       LOG.error("Error in finding deployed application: " + id, e);
@@ -190,7 +191,7 @@ public class HydraSolrClient {
     return entry;
   }
 
-  public org.apache.hadoop.yarn.service.api.records.Application deployApp(String id) throws SolrServerException, IOException {
+  public Service deployApp(String id) throws SolrServerException, IOException {
     long download = 0;
     ObjectMapper mapper = new ObjectMapper();
     mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -208,7 +209,7 @@ public class HydraSolrClient {
     } catch (WordLengthException e) {
       name = "c" + java.util.UUID.randomUUID().toString().substring(0, 11);
     }
-    org.apache.hadoop.yarn.service.api.records.Application yarnApp = null;
+    Service yarnApp = null;
     SolrQuery query = new SolrQuery();
     query.setQuery("id:" + id);
     query.setFilterQueries("type_s:AppStoreEntry");
@@ -221,7 +222,7 @@ public class HydraSolrClient {
       entry.setOrg(d.get("org_s").toString());
       entry.setName(d.get("name_s").toString());
       entry.setDesc(d.get("desc_s").toString());
-      yarnApp = mapper.readValue(d.get("yarnfile_s").toString(), org.apache.hadoop.yarn.service.api.records.Application.class);
+      yarnApp = mapper.readValue(d.get("yarnfile_s").toString(), Service.class);
       entry.setLike(Integer.valueOf(d.get("like_i").toString()));
       entry.setDownload(Integer.valueOf(d.get("download_i").toString()));
       download = entry.getDownload() + 1;
@@ -296,7 +297,7 @@ public class HydraSolrClient {
       // Keep only YARN data model for yarnfile field
       String yarnFile = mapper.writeValueAsString(app);
       LOG.info("app:"+yarnFile);
-      org.apache.hadoop.yarn.service.api.records.Application yarnApp = mapper.readValue(yarnFile, org.apache.hadoop.yarn.service.api.records.Application.class);
+      Service yarnApp = mapper.readValue(yarnFile, Service.class);
       buffer.setField("yarnfile_s", mapper.writeValueAsString(yarnApp));
 
       docs.add(buffer);

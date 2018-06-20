@@ -2,7 +2,7 @@
   "name": "Jenkins",
   "organization": "Jenkins-ci.org",
   "description": "The leading open source automation server",
-  "icon": "/css/img/jenkins.png",
+  "icon": "css/img/jenkins.png",
   "lifetime": "3600",
   "components": [
     {

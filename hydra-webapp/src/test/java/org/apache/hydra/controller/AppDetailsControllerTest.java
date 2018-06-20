@@ -20,7 +20,7 @@ package org.apache.hydra.controller;
 
 import org.apache.hydra.controller.AppDetailsController;
 import org.apache.hydra.model.AppEntry;
-import org.apache.hadoop.yarn.service.api.records.Application;
+import org.apache.hadoop.yarn.service.api.records.Service;
 import org.apache.hadoop.yarn.service.api.records.Component;
 import org.apache.hadoop.yarn.service.api.records.Container;
 import org.junit.Before;
@@ -65,7 +65,7 @@ public class AppDetailsControllerTest {
     String id = "application 1";
     AppDetailsController ac = Mockito.mock(AppDetailsController.class);
     
-    Application yarnfile = new Application();
+    Service yarnfile = new Service();
     Component comp = new Component();
     Container c = new Container();
     c.setId("container-1");
@@ -86,7 +86,7 @@ public class AppDetailsControllerTest {
     String id = "application 1";
     AppDetailsController ac = Mockito.mock(AppDetailsController.class);
     
-    Application yarnfile = new Application();
+    Service yarnfile = new Service();
     Component comp = new Component();
     Container c = new Container();
     c.setId("container-1");
@@ -105,7 +105,7 @@ public class AppDetailsControllerTest {
     String id = "application 1";
     AppDetailsController ac = Mockito.mock(AppDetailsController.class);
     
-    Application yarnfile = new Application();
+    Service yarnfile = new Service();
     Component comp = new Component();
     Container c = new Container();
     c.setId("container-1");

@@ -17,12 +17,45 @@
   <doc>
     <field name="id">appStore_1</field>
     <field name="type_s">AppStoreEntry</field>
-    <field name="org_s">Hortonworks</field>
-    <field name="name_s">LAMP</field>
-    <field name="desc_s">Linux Apache MySQL PHP web application</field>
+    <field name="org_s">Apache</field>
+    <field name="name_s">Http Server Project</field>
+    <field name="desc_s">The Number One HTTP Server On The Internet</field>
     <field name="like_i">50000</field>
     <field name="download_i">100000</field>
+    <field name="yarnfile_s">{
+  "name": "httpd",
+  "version": "1.0",
+  "kerberos_principal" : {
+    "principal_name" : "hbase/_HOST@EXAMPLE.COM",
+    "keytab" : "file:///etc/security/keytabs/hbase.service.keytab"
+  },
+  "components" :
+  [
+    {
+      "name": "httpd",
+      "number_of_containers": 2,
+      "artifact": {
+        "id": "centos/httpd-24-centos7:latest",
+        "type": "DOCKER"
+      },
+      "resource": {
+        "cpus": 1,
+        "memory": "256"
+      },
+      "configuration": {
+        "env": {
+          "YARN_CONTAINER_RUNTIME_DOCKER_RUN_OVERRIDE_DISABLE":"true"
+        },
+        "properties": {
+          "docker.network": "host"
+        }
+      }
+    }
+  ]
+}
+    </field>
   </doc>
+<!--
   <doc>
     <field name="id">appStore_2</field>
     <field name="type_s">AppStoreEntry</field>
@@ -32,6 +65,7 @@
     <field name="like_i">2000</field>
     <field name="download_i">10000</field>
   </doc>
+-->
   <doc>
     <field name="id">appStore_3</field>
     <field name="type_s">AppStoreEntry</field>
@@ -40,7 +74,41 @@
     <field name="desc_s">The leading open source automation server</field>
     <field name="like_i">100000</field>
     <field name="download_i">1000000</field>
+    <field name="yarnfile_s">{
+  "name": "httpd",
+  "version": "1.0",
+  "kerberos_principal" : {
+    "principal_name" : "hbase/_HOST@EXAMPLE.COM",
+    "keytab" : "file:///etc/security/keytabs/hbase.service.keytab"
+  },
+  "components" :
+  [
+    {
+      "name": "jenkins",
+      "number_of_containers": 1,
+      "artifact": {
+        "id": "jenkins/jenkins:latest",
+        "type": "DOCKER"
+      },
+      "resource": {
+        "cpus": 1,
+        "memory": "256"
+      },
+      "run_privileged_container": true,
+      "configuration": {
+        "env": {
+          "YARN_CONTAINER_RUNTIME_DOCKER_RUN_OVERRIDE_DISABLE":"true"
+        },
+        "properties": {
+          "docker.network": "host"
+        }
+      }
+    }
+  ]
+}
+    </field>
   </doc>
+<!--
   <doc>
     <field name="id">appStore_4</field>
     <field name="type_s">AppStoreEntry</field>
@@ -50,6 +118,7 @@
     <field name="like_i">2000</field>
     <field name="download_i">10000</field>
   </doc>
+-->
   <doc>
     <field name="id">appStore_5</field>
     <field name="type_s">AppStoreEntry</field>
@@ -58,6 +127,39 @@
     <field name="desc_s">The original IBM PC simulation that runs in your web browser.</field>
     <field name="like_i">2000</field>
     <field name="download_i">10000</field>
+    <field name="yarnfile_s">{
+  "name": "pcjs",
+  "version": "1.0",
+  "kerberos_principal" : {
+    "principal_name" : "hbase/_HOST@EXAMPLE.COM",
+    "keytab" : "file:///etc/security/keytabs/hbase.service.keytab"
+  },
+  "components" :
+  [
+    {
+      "name": "pcjs",
+      "number_of_containers": 1,
+      "artifact": {
+        "id": "hadoop/pcjs:latest",
+        "type": "DOCKER"
+      },
+      "resource": {
+        "cpus": 1,
+        "memory": "256"
+      },
+      "run_privileged_container": true,
+      "configuration": {
+        "env": {
+          "YARN_CONTAINER_RUNTIME_DOCKER_RUN_OVERRIDE_DISABLE":"true"
+        },
+        "properties": {
+          "docker.network": "host"
+        }
+      }
+    }
+  ]
+}
+    </field>
   </doc>
   <doc>
     <field name="id">appStore_6</field>
@@ -67,7 +169,41 @@
     <field name="desc_s">A toolkit for developing and comparing reinforcement learning algorithms.</field>
     <field name="like_i">360</field>
     <field name="download_i">10231</field>
+    <field name="yarnfile_s">{
+  "name": "openai-gym",
+  "version": "1.0",
+  "kerberos_principal" : {
+    "principal_name" : "hbase/_HOST@EXAMPLE.COM",
+    "keytab" : "file:///etc/security/keytabs/hbase.service.keytab"
+  },
+  "components" :
+  [
+    {
+      "name": "openai-gym",
+      "number_of_containers": 1,
+      "artifact": {
+        "id": "eboraas/openai-gym:latest",
+        "type": "DOCKER"
+      },
+      "resource": {
+        "cpus": 1,
+        "memory": "256"
+      },
+      "run_privileged_container": true,
+      "configuration": {
+        "env": {
+          "YARN_CONTAINER_RUNTIME_DOCKER_RUN_OVERRIDE_DISABLE":"true"
+        },
+        "properties": {
+          "docker.network": "host"
+        }
+      }
+    }
+  ]
+}
+    </field>
   </doc>
+<!--
   <doc>
     <field name="type_s">docker</field>
     <field name="id">appStore_1_1</field>
@@ -159,4 +295,5 @@
     <field name="version_s">latest</field>
     <field name="volumes">/path/to/notebooks:/mnt/hdfs/user/${user}/gym</field>
   </doc>
+-->
 </add>

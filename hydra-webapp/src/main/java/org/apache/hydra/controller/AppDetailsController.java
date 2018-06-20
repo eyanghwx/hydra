@@ -27,8 +27,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import org.apache.hadoop.yarn.service.api.records.Application;
-import org.apache.hadoop.yarn.service.api.records.ApplicationState;
+import org.apache.hadoop.yarn.service.api.records.Service;
+import org.apache.hadoop.yarn.service.api.records.ServiceState;
 import org.apache.hydra.application.HydraSolrClient;
 import org.apache.hydra.application.YarnClient;
 import org.apache.hydra.model.AppEntry;
@@ -197,7 +197,8 @@ public class AppDetailsController {
   public AppEntry getStatus(@PathParam("id") String id) {
     HydraSolrClient sc = new HydraSolrClient();
     AppEntry appEntry = sc.findAppEntry(id);
-    YarnClient.getStatus(appEntry);
+    YarnClient yc = new YarnClient();
+    yc.getStatus(appEntry);
     return appEntry;
   }
   
@@ -219,10 +220,11 @@ public class AppDetailsController {
   public Response stopApp(@PathParam("id") String id) {
     HydraSolrClient sc = new HydraSolrClient();
     AppEntry app = sc.findAppEntry(id);
-    Application yarnApp = app.getYarnfile();
-    yarnApp.setState(ApplicationState.STOPPED);
+    Service yarnApp = app.getYarnfile();
+    yarnApp.setState(ServiceState.STOPPED);
     try {
-      YarnClient.stopApp(yarnApp);
+      YarnClient yc = new YarnClient();
+      yc.stopApp(yarnApp);
     } catch (JsonProcessingException e) {
       return Response.status(Status.BAD_REQUEST).build();
     }
@@ -247,10 +249,11 @@ public class AppDetailsController {
   public Response restartApp(@PathParam("id") String id) {
     HydraSolrClient sc = new HydraSolrClient();
     AppEntry app = sc.findAppEntry(id);
-    Application yarnApp = app.getYarnfile();
-    yarnApp.setState(ApplicationState.STARTED);
+    Service yarnApp = app.getYarnfile();
+    yarnApp.setState(ServiceState.STARTED);
     try {
-      YarnClient.restartApp(yarnApp);
+      YarnClient yc = new YarnClient();
+      yc.restartApp(yarnApp);
     } catch (JsonProcessingException e) {
       return Response.status(Status.BAD_REQUEST).build();
     }

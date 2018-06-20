@@ -19,7 +19,7 @@ mvn package
 ## Run
 
 ```
-docker run -d -p 8080:8080 -p 8983:8983 hortonworks/hydra:1.0-SNAPSHOT
+docker run -d -p 8080:8080 -p 8983:8983 hortonworks/hydra-docker:1.0-SNAPSHOT
 ```
 
 When running this command a couple of things happens:
