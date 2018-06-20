@@ -33,6 +33,7 @@ import org.apache.hadoop.security.token.Token;
 import org.apache.hadoop.security.token.TokenIdentifier;
 import org.apache.hadoop.yarn.conf.YarnConfiguration;
 import org.apache.hadoop.yarn.service.api.records.Service;
+import org.apache.hadoop.yarn.service.api.records.KerberosPrincipal;
 import org.apache.hadoop.yarn.util.RMHAUtils;
 import org.apache.hydra.model.AppEntry;
 import org.eclipse.jetty.util.UrlEncoded;
@@ -53,22 +54,6 @@ public class YarnClient {
 
   private static final Log LOG = LogFactory.getLog(YarnClient.class);
   private static Configuration conf = null;
-//  private static String YARN_SERVICES_API_URL;
-//  private static boolean kerberosSecurity = false;
-//  private static String runAsUser = "hbase";
-
-//  static {
-//    // Locate Solr URL
-//    ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-//    InputStream input = classLoader.getResourceAsStream("hydra.properties");
-//    Properties properties = new Properties();
-//    try {
-//      properties.load(input);
-//      YARN_SERVICES_API_URL = getRMWebAddress();
-//    } catch (IOException e) {
-//      LOG.error("Error in loading Hydra configuration: ", e);
-//    }
-//  }
 
   /**
    * Calculate Resource Manager address base on working REST API.
@@ -192,6 +177,25 @@ public class YarnClient {
     mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     ClientResponse response;
     try {
+      boolean useKerberos = UserGroupInformation.isSecurityEnabled();
+      if (useKerberos) {
+        KerberosPrincipal kerberos = new KerberosPrincipal();
+        String temp[] = System.getenv("PRINCIPAL").split("/");
+        String temp2[] = System.getenv("PRINCIPAL").split("@");
+        StringBuilder sb = new StringBuilder();
+        sb.append(temp[0]);
+        sb.append("/");
+        sb.append("_HOST");
+        sb.append("@");
+        sb.append(temp2[1]);
+        String keytab = System.getenv("KEYTAB");
+        if (!keytab.startsWith("file://")) {
+          keytab = "file://" + keytab;
+        }
+        kerberos.setPrincipalName(sb.toString());
+        kerberos.setKeytab(keytab);
+        app.setKerberosPrincipal(kerberos);
+      }
       response = getApiClient().post(ClientResponse.class, mapper.writeValueAsString(app));
       if (response.getStatus() >= 299) {
         String message = response.getEntity(String.class);

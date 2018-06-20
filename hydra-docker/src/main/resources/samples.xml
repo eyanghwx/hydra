@@ -25,10 +25,6 @@
     <field name="yarnfile_s">{
   "name": "httpd",
   "version": "1.0",
-  "kerberos_principal" : {
-    "principal_name" : "hbase/_HOST@EXAMPLE.COM",
-    "keytab" : "file:///etc/security/keytabs/hbase.service.keytab"
-  },
   "components" :
   [
     {
@@ -55,7 +51,6 @@
 }
     </field>
   </doc>
-<!--
   <doc>
     <field name="id">appStore_2</field>
     <field name="type_s">AppStoreEntry</field>
@@ -64,8 +59,35 @@
     <field name="desc_s">Kafka project aims to provide a unified, high-throughput, low-latency platform for handling real-time data feeds.</field>
     <field name="like_i">2000</field>
     <field name="download_i">10000</field>
+    <field name="yarnfile_s">{
+  "name": "kafka",
+  "version": "1.0",
+  "components" :
+  [
+    {
+      "name": "kafka-broker",
+      "number_of_containers": 2,
+      "artifact": {
+        "id": "spotify/kafka:latest",
+        "type": "DOCKER"
+      },
+      "resource": {
+        "cpus": 1,
+        "memory": "256"
+      },
+      "configuration": {
+        "env": {
+          "YARN_CONTAINER_RUNTIME_DOCKER_RUN_OVERRIDE_DISABLE":"true"
+        },
+        "properties": {
+          "docker.network": "host"
+        }
+      }
+    }
+  ]
+}
+    </field>
   </doc>
--->
   <doc>
     <field name="id">appStore_3</field>
     <field name="type_s">AppStoreEntry</field>
@@ -77,10 +99,6 @@
     <field name="yarnfile_s">{
   "name": "httpd",
   "version": "1.0",
-  "kerberos_principal" : {
-    "principal_name" : "hbase/_HOST@EXAMPLE.COM",
-    "keytab" : "file:///etc/security/keytabs/hbase.service.keytab"
-  },
   "components" :
   [
     {
@@ -130,10 +148,6 @@
     <field name="yarnfile_s">{
   "name": "pcjs",
   "version": "1.0",
-  "kerberos_principal" : {
-    "principal_name" : "hbase/_HOST@EXAMPLE.COM",
-    "keytab" : "file:///etc/security/keytabs/hbase.service.keytab"
-  },
   "components" :
   [
     {
@@ -172,10 +186,6 @@
     <field name="yarnfile_s">{
   "name": "openai-gym",
   "version": "1.0",
-  "kerberos_principal" : {
-    "principal_name" : "hbase/_HOST@EXAMPLE.COM",
-    "keytab" : "file:///etc/security/keytabs/hbase.service.keytab"
-  },
   "components" :
   [
     {
@@ -190,6 +200,43 @@
         "memory": "256"
       },
       "run_privileged_container": true,
+      "configuration": {
+        "env": {
+          "YARN_CONTAINER_RUNTIME_DOCKER_RUN_OVERRIDE_DISABLE":"true"
+        },
+        "properties": {
+          "docker.network": "host"
+        }
+      }
+    }
+  ]
+}
+    </field>
+  </doc>
+  <doc>
+    <field name="id">appStore_7</field>
+    <field name="type_s">AppStoreEntry</field>
+    <field name="org_s">Docker</field>
+    <field name="name_s">Registry</field>
+    <field name="desc_s">The Docker Registry 2.0 implementation for storing and distributing Docker images.</field>
+    <field name="like_i">360</field>
+    <field name="download_i">1</field>
+    <field name="yarnfile_s">{
+  "name": "docker-registry",
+  "version": "1.0",
+  "components" :
+  [
+    {
+      "name": "registry",
+      "number_of_containers": 1,
+      "artifact": {
+        "id": "registry:latest",
+        "type": "DOCKER"
+      },
+      "resource": {
+        "cpus": 1,
+        "memory": "256"
+      },
       "configuration": {
         "env": {
           "YARN_CONTAINER_RUNTIME_DOCKER_RUN_OVERRIDE_DISABLE":"true"
