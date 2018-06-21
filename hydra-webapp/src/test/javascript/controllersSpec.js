@@ -145,6 +145,7 @@ describe('Controller tests', function () {
         scope.deployApp("aabbccdd");
       });
       httpBackend.flush();
+      expect(scope.appStore.length).toBe(0);
     });
 
     it('should run test to search for apps', function() {
