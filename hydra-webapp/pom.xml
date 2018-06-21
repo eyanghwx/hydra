@@ -403,8 +403,8 @@
                         </goals>
                         <configuration>
                             <outputFile>${project.build.directory}/apidocs.log</outputFile>
-                            <executable>${basedir}/node_modules/apidoc/bin/apidoc</executable>
-                            <commandlineArgs>-i src/main/java -o ${project.build.directory}/site/apidocs</commandlineArgs>
+                            <executable>${basedir}/node/node</executable>
+                            <commandlineArgs>${basedir}/node_modules/apidoc/bin/apidoc -i src/main/java -o ${project.build.directory}/site/apidocs</commandlineArgs>
                             <silent>true</silent>
                         </configuration>
                     </execution>
